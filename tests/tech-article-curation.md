@@ -87,3 +87,10 @@ node "$curationRoot/check-mermaid.mjs" <멱등키-fixture-절대경로> <SNAP-fi
 공식 형식, 실제 원문 탐색·직접 분석·학습 문서 생성, 고정 SHA의 전체 아카이브 메타데이터/URL 검증, 기존 파일 보존, Markdown 구조와 가로형 Mermaid 구문을 확인했다. 스킬은 SKILL.md 하나이며 다른 스킬이나 Notion에 의존하지 않는다.
 
 실제 Obsidian GUI, 이미지 표시, HTTP 예제 실행, 클라이언트 자동 호출·독립 모델 평가, scheduler 실제 실행 상태, 진행 중 staging 전체 URL, 원격 쓰기 권한·CI/게시 결과는 미검증이다. 이번 작업은 스킬 구현과 테스트 산출물만 dev에 반영하며 실제 아카이브/스케줄러를 변경하거나 main에 병합하지 않는다.
+
+## 스케줄러 비교 후속 보완 (2026-11-07)
+
+- 운영 스케줄러의 최신 저장 지침과 대조해 원격 GitHub 연결의 개별 URL 전수 조회 금지, 스테이징 이후 CI 전체 중복 검사, `daily-tech` 단순 behind 상태 처리 문구를 보완했다.
+- SNAP과 멱등성 fixture의 문제 배경·처리 경계·검증 결과·학습 적용 조건을 실제 공개 원문에 근거해 확장했다. SNAP의 6일간 입력 토큰 약 76억/출력 토큰 약 4,520만 감소 및 L4 GPU 서빙 테스트 1,203 requests/s, p50 9.02ms, p99 15.23ms는 [원문](https://toss.tech/article/54329)의 별도 운영/부하 시험 수치다. 멱등키/저장·재시도 흐름은 [토스페이먼츠 원문](https://docs.tosspayments.com/blog/what-is-idempotency)과 대조했다.
+- 기존 보고서의 **332 articles / 24 tests(1 skipped) / Mermaid 파싱 통과는 이 후속 편집 이전의 기록**이다. 이번 편집 후 원본 아카이브 전체 검증·단위 테스트·Mermaid 파싱·Obsidian 렌더링·실제 스케줄러 게시를 재실행했다고 주장하지 않는다. Codex 로컬 dev에서 이 변경을 가져온 뒤 관련 검증을 다시 실행해야 한다.
+- 변경 범위는 스킬 1개, 테스트 fixture 2개, 검증 보고서 1개이며 원본 `guseoh/cs`, GitHub `main`과 스케줄러 설정은 이 Git 작업에서 변경하지 않았다.
