@@ -44,7 +44,7 @@ git -C "$curationRoot/cs" rev-parse HEAD
 
 ```powershell
 & "$validationRoot/venv/Scripts/python.exe" -X utf8 -m skills_ref.cli validate ./tech-article-curation
-& "$validationRoot/venv/Scripts/python.exe" -X utf8 C:/Users/guseo/.codex/skills/.system/skill-creator/scripts/quick_validate.py ./tech-article-curation
+& "$validationRoot/venv/Scripts/python.exe" -X utf8 "$HOME/.codex/skills/.system/skill-creator/scripts/quick_validate.py" ./tech-article-curation
 & "$validationRoot/venv/Scripts/python.exe" -X utf8 "$curationRoot/cs/scripts/validate_daily_tech.py"
 # 아래 테스트의 작업 디렉터리는 임시 cs 복제본 루트
 & "$validationRoot/venv/Scripts/python.exe" -X utf8 -m unittest scripts.test_daily_tech scripts.test_daily_tech_preflight

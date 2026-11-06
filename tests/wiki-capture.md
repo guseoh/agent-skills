@@ -72,7 +72,7 @@ git clone --depth 1 https://github.com/agentskills/agentskills.git "$reviewRoot/
 python -m venv "$reviewRoot/venv"
 & "$reviewRoot/venv/Scripts/python.exe" -m pip install --disable-pip-version-check "$reviewRoot/agentskills/skills-ref" PyYAML
 & "$reviewRoot/venv/Scripts/python.exe" -X utf8 -m skills_ref.cli validate ./wiki-capture
-& "$reviewRoot/venv/Scripts/python.exe" -X utf8 C:/Users/guseo/.codex/skills/.system/skill-creator/scripts/quick_validate.py ./wiki-capture
+& "$reviewRoot/venv/Scripts/python.exe" -X utf8 "$HOME/.codex/skills/.system/skill-creator/scripts/quick_validate.py" ./wiki-capture
 ```
 
 - `skills-ref 0.1.0`: **`Valid skill: wiki-capture`**, exit 0.

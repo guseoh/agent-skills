@@ -12,7 +12,7 @@
 
 ```powershell
 & "$validationRoot/venv/Scripts/python.exe" -X utf8 -m skills_ref.cli validate ./backend-architecture-review
-& "$validationRoot/venv/Scripts/python.exe" -X utf8 C:/Users/guseo/.codex/skills/.system/skill-creator/scripts/quick_validate.py ./backend-architecture-review
+& "$validationRoot/venv/Scripts/python.exe" -X utf8 "$HOME/.codex/skills/.system/skill-creator/scripts/quick_validate.py" ./backend-architecture-review
 ```
 
 결과: 각각 **`Valid skill: backend-architecture-review`**, **`Skill is valid!`**, exit 0. 필수 frontmatter, 이름/폴더 일치, description 검증 통과. 스킬은 `SKILL.md` 하나로 구성하며 로컬 참조·스크립트·다른 스킬 의존성이 없다.

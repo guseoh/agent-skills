@@ -83,7 +83,7 @@ git -C "$reverseRoot/petclinic" show --format= 753d35c -- src/main/java/org/spri
 
 ```powershell
 & "$validationRoot/venv/Scripts/python.exe" -X utf8 -m skills_ref.cli validate ./reverse-engineering
-& "$validationRoot/venv/Scripts/python.exe" -X utf8 C:/Users/guseo/.codex/skills/.system/skill-creator/scripts/quick_validate.py ./reverse-engineering
+& "$validationRoot/venv/Scripts/python.exe" -X utf8 "$HOME/.codex/skills/.system/skill-creator/scripts/quick_validate.py" ./reverse-engineering
 ```
 
 결과: **`Valid skill: reverse-engineering`**, **`Skill is valid!`**, 모두 exit 0. 이름/폴더·필수 frontmatter·description 검증 통과. 스킬은 SKILL.md 하나이며 로컬 참조·실행 스크립트·다른 스킬 의존성이 없다.
