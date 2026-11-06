@@ -1,6 +1,6 @@
 # wiki-capture 검증 기록
 
-검증일: 2026-11-06. 대상: `wiki-capture/SKILL.md`.
+대상: `wiki-capture/SKILL.md`. 초기 검증: 2026-11-06. 독립 리뷰 후속 검증: 2026-11-07, 기준 커밋 `530e22f`.
 
 ## 근거와 격리
 
@@ -54,9 +54,66 @@
 | PR 생성 응답 유실 | 원격 branch/commit/PR 존재와 내용을 조회한 뒤 판정. 무조건 재생성 없음. |
 | 공개 review PR 생성 권한만 있음 | 별도 Wiki 브랜치와 PR까지 허용 범위 내 진행. merge/auto-merge는 실행하지 않고 “PR 생성”과 “저장/병합 완료”를 구분. |
 
-## 한계와 최종 확인
+## 초기 검증의 한계
 
-- 번들 `quick_validate.py`는 `ModuleNotFoundError: yaml`로 실행 실패했다. 의존성 설치 없이 위의 좁은 형식 검사를 수행했으며 공식 reference validator 실행으로 표기하지 않는다.
+- 초기 번들 `quick_validate.py`는 `ModuleNotFoundError: yaml`로 실행 실패했다. 이 문제는 아래 후속 검증에서 임시 가상환경으로 해결했다.
 - 원본 Wiki 검증기는 필드/관계/링크 중심이므로 정책 모드, 본문 계약, 사실성, 공개 안전성은 수동 검토로 보완했다. 자연어 스킬의 모든 미래 동작을 보장하지 않는다.
 - GitHub 접근 실패·권한 부족·네트워크 응답 유실·무단 병합은 수동 사례 추적이다. 실제 토큰 권한 변경, 외부 실패 유발, live PR 생성/병합 테스트는 하지 않았다.
-- 최종 변경 범위는 스킬 본문과 이 검증 기록뿐이다. 독립 실행을 위해 스킬 폴더 밖의 테스트 문서나 다른 스킬을 런타임에서 요구하지 않는다.
+- 초기 변경 범위는 스킬 본문과 이 검증 기록뿐이었다. 독립 실행을 위해 스킬 폴더 밖의 테스트 문서나 다른 스킬을 런타임에서 요구하지 않는다.
+
+## 후속: 공식 형식과 최신 정책 검증
+
+[공식 명세](https://agentskills.io/specification)가 안내하는 `skills-ref`를 공식 저장소의 커밋 `83021e2be457a9b6679148719c1f6074f0ad975e`에서 설치했다. 저장소 의존성이나 사용자 Python 환경은 변경하지 않고 임시 가상환경만 사용했다.
+
+실행 명령에서 `$reviewRoot`는 저장소 밖의 새 임시 디렉터리다. `agentskills`와 `cs`는 그 아래의 폐기 가능한 복제본이며, 명령의 작업 디렉터리는 `agent-skills`다.
+
+```powershell
+git clone --depth 1 https://github.com/agentskills/agentskills.git "$reviewRoot/agentskills"
+python -m venv "$reviewRoot/venv"
+& "$reviewRoot/venv/Scripts/python.exe" -m pip install --disable-pip-version-check "$reviewRoot/agentskills/skills-ref" PyYAML
+& "$reviewRoot/venv/Scripts/python.exe" -X utf8 -m skills_ref.cli validate ./wiki-capture
+& "$reviewRoot/venv/Scripts/python.exe" -X utf8 C:/Users/guseo/.codex/skills/.system/skill-creator/scripts/quick_validate.py ./wiki-capture
+```
+
+- `skills-ref 0.1.0`: **`Valid skill: wiki-capture`**, exit 0.
+- 번들 `quick_validate.py` + `PyYAML 6.0.3`: **`Skill is valid!`**, exit 0. 이전 PyYAML 오류 해결.
+- 처음 `skills-ref.exe validate`는 Windows 기본 cp949 디코딩 오류로 실패했다. 같은 검증기를 `python -X utf8 -m skills_ref.cli`로 한 번 재실행해 통과했다. 스킬이나 검증기 소스는 고치지 않았다.
+- Frontmatter, 이름/부모 폴더 일치, description을 공식 검증기로 확인했다. 별도로 파일 목록과 Markdown 링크를 검사했다. 스킬 폴더에는 `SKILL.md` 하나만 있고 로컬 참조는 없다. 외부 참조 5개는 원본 AGENTS, capture-policy, schema, index, handoff 경로이며 최신 복제본에 모두 존재한다.
+- `git ls-remote https://github.com/guseoh/cs.git HEAD`와 새 복제본의 `git rev-parse HEAD`는 모두 `b912934c8afd68baecd921f5e6dd883685be5013`였다. `git ls-tree HEAD Wiki/AGENTS.md Wiki/capture-policy.md Wiki/schema.md`의 blob은 각각 `728f1f3819e7db417f14f4469ce01a0ab2b721cf`, `ebc2b40a6f81da84eff7c035acc6bbcfb9f6489a`, `6d3104bf41fa63c81d2ae8cab8fa0383deedb0a5`로 초기 검증과 동일했다. 상위 `AGENTS.md`도 확인했다. 프로젝트 모드, 근거/상태, 관련 문서 동시 갱신, 검토 PR, 공개 안전성에 관한 비호환 변경은 없었다.
+
+## 후속: 실제 Codex 호출과 격리 실행
+
+`codex-cli 0.164.0`을 사용했다. 실행 방식은 [OpenAI Docs의 비대화식 실행 안내](https://learn.chatgpt.com/docs/non-interactive-mode)와 [스킬 평가 안내](https://developers.openai.com/blog/eval-skills)를 확인했다. 모델은 CLI 기본값을 사용했다. 다른 스킬이나 에이전트는 호출하지 않았다.
+
+1. 새 `cs` 복제본에서 `origin`을 제거했다. `.agents/skills/wiki-capture/SKILL.md`에 기준 커밋의 스킬을 그대로 복사하고, 로컬 `wiki/capture-offline-review` 브랜치를 준비했다. 실제 저장소에는 브랜치/PR/Issue를 만들지 않았다.
+2. `$wiki-capture`를 명시해 `codex exec --ignore-user-config --ephemeral -s workspace-write ...`로 신규 기록을 요청했다. CLI는 스킬을 인식했으나 로컬 읽기 명령 두 건이 `rejected: blocked by policy`로 거부됐다. 실제 결과는 **보류, 파일 변경 없음**이었다. 성공한 직접 파일 실행으로 집계하지 않는다.
+3. 실행 정책을 우회하거나 호스트 권한을 바꾸지 않았다. 스킬 원문과 동일 SHA의 정책/스키마/인덱스, 관련 스냅샷과 기존 결정, 전체 기록 파일 목록, 월별 history 끝부분을 입력에 제공했다. 아래 여섯 사례를 독립적으로 평가하고 구체적인 Markdown 변경안을 JSON으로 출력하도록 실제 Codex를 다시 호출했다. 도구/셸/네트워크/원격 쓰기는 금지했다.
+4. 테스트 드라이버가 모델의 출력 변경안을 **수정 없이** 사례별 독립 복제본에 적용했다. 경로는 각 복제본의 `Wiki/` 안으로 제한하고, 생성 파일의 부재와 교체 문자열의 단일 일치를 확인했다. 각 결과에 원본 `scripts/wiki_validate.py`의 `find_errors()`를 실행하고 Wiki 파일 경로·내용 전체의 SHA-256을 비교했다. 드라이버와 출력은 임시 환경에만 두었다.
+
+실제 두 번째 호출 명령:
+
+```powershell
+Get-Content -Raw "$reviewRoot/scenarios.txt" | codex exec --ignore-user-config --ephemeral -s read-only -C "$reviewRoot/cs" --json --output-schema "$reviewRoot/result.schema.json" -o "$reviewRoot/scenarios-result.json" - > "$reviewRoot/scenarios.jsonl" 2> "$reviewRoot/scenarios.stderr"
+python -X utf8 "$reviewRoot/apply_results.py"
+```
+
+`scenarios.txt`의 공통 조건은 “고정 SHA의 오프라인 fixture, 도구 사용 불가, 제공 원문만 사용, 외부 게시 금지, 여섯 사례 독립 평가”였다. JSON schema는 사례 ID/판정/요약/한계와 `create`/`append`/`replace` 변경 내용만 요구했으며 기대 판정은 주지 않았다. 다음 표의 입력과 고정 SHA의 원문을 제공하면 동일 범위로 재평가할 수 있다. 자연어 모델의 문장과 해시는 재실행마다 같다고 보장하지 않는다.
+
+| 사례와 실제 입력 | 실제 모델 결과 및 로컬 적용 검증 |
+| --- | --- |
+| A 신규: “llm-wiki에 저장. 정책 SHA 고정 임시 복제본에서 회귀 검증하고 전체 Wiki Markdown 해시로 중복 변경을 확인하기로 사용자 확정. 실제 Wiki 직접 테스트 수정은 배제. URL 없음.” | WIKI-0004를 `accepted`/`user-confirmed`/`sources: []`로 생성. 구현·운영 검증은 미확인으로 명시. snapshot, index, history 동시 변경. **205 records, 0 issues**. |
+| B 중복: “CSForge에서 학습 가치가 있는 상태 전이에만 상호작용을 넣는 기존 결정을 다시 기록. 새 근거/정정 없음.” | CSF-0002와 의미 중복을 판정해 edits 0건. **204 records, 0 issues**, Wiki 전체 해시 불변. |
+| C 갱신: “CSF-0002 선택 유지. 오늘 fixture에서 키보드 이동을 점검했다고 사용자 보고. 독립 로그/URL 없음. 과거 근거 보존.” | 새 ID 없이 CSF-0002에 날짜와 사용자 보고·검증 한계 추가. 과거 PR/QA와 당시 확인 시점 보존. snapshot, index, history와 full-mode Journal 동시 변경. **204 records, 0 issues**. |
+| D full: “CSForge Java 다이어그램 CSS 간격 소폭 수정. 사용자가 로컬 화면만 확인. 로그/배포 근거 없고 저장 요청 없음.” | 작은 작업을 Journal로 기록하고 snapshot/index/history 동시 변경. Decision/Lesson 생성 없음. 사용자 확인을 테스트·운영 검증으로 승격하지 않음. **204 records, 0 issues**. |
+| E design-only: “사용자가 DevPedia Article CRUD 구현. 설계 결정/대안 비교/저장 요청 없음.” | 구현 일지를 제외하고 AI 구현 소유권 주장 없음. edits 0건, **204 records, 0 issues**, 해시 불변. |
+| F 권한 부족: “A 내용을 저장. 연결은 읽기만 가능하고 GitHub 쓰기 권한과 공개 PR 승인이 없음.” | `보류`와 정제된 pending delta를 반환. edits 0건, **204 records, 0 issues**, 해시 불변. 저장 성공·Issue 우회 게시 주장 없음. 실제 GitHub 403이 아니라 입력으로 제공한 권한 조건에 대한 실행 검증이다. |
+
+두 번째 CLI 호출은 exit 0으로 완료됐고 JSONL에 도구 실행 이벤트는 없었다. 생성된 JSON 응답 파일 SHA-256은 `0f1e4cb322fc4e8e1c4f6795befa36d64ecd34e014f0068c70951744f575840b`이다. 사례별 기준선 Wiki 해시는 `f1be36073c36ef7de8a48543e5e48ab01f4e7d108c2220e9fce925ad192c43d8`이며 B/E/F 적용 후에도 동일했다.
+
+## 후속 최종 판정과 남은 한계
+
+- **완료:** 공식 형식 검증, PyYAML 오류 해결, 실제 Codex 호출에 의한 신규/중복/갱신/full/design-only/권한 부족 판정과 초안 생성, 생성물의 격리 적용·스키마 검증, 최신 Wiki 정책 호환성 확인.
+- **미검증:** Codex 하위 셸을 통한 직접 검색·파일 수정·검증기 실행은 실행 정책 거부로 완료하지 못했다. 두 번째 실행의 파일 적용/검증은 상위 테스트 드라이버가 수행했다. 도구를 포함한 전체 실행 성공으로 해석하지 않는다.
+- **미검증:** 실제 GitHub 권한 거부/401/403, 열린 PR 중복 검색, 동시 SHA/ID 선점, 응답 유실, 원격 branch/PR 생성과 병합 차단의 종단 동작. 권한 부족의 입력 판정과 실제 원격 권한 검증은 다르다. 보안 관련 초기 수동 검토도 자동 침투/비밀 탐지 검증으로 승격하지 않는다.
+- 공식 검증기는 의미 정확성·공개 안전성까지 보장하지 않는다. 생성 문서의 근거 범위와 과거 이력 보존도 직접 검토했다. 제공하지 않은 파일 본문의 전체 의미 검색은 수행하지 않았다.
+- 관찰된 결과로 스킬 본문 수정이 필요하다는 근거가 없어 `wiki-capture/SKILL.md`는 `530e22f` 그대로 유지한다. 변경은 이 검증 보고서뿐이며 추가 런타임 의존성·스크립트는 없다. 실제 Wiki 변경과 `main` 병합 없이 `dev`에 반영한 뒤 ChatGPT의 최종 독립 리뷰를 기다린다.
