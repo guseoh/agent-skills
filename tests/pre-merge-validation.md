@@ -67,10 +67,18 @@ git diff --cached --check
 
 `.github/workflows/validate-skills.yml`은 PR 및 dev push에서 `Validate skills and Markdown` 검사를 수행한다. contents: read, checkout 자격 증명 미보존, actions/검증기 SHA 고정, 10분 제한이며 PR 코드를 권한 있는 이벤트로 실행하는 pull_request_target이나 저장소 쓰기 작업을 사용하지 않는다.
 
-초기 조회에서 main protection은 404(미설정), rulesets는 빈 목록이었으며 연결 계정은 admin 권한이 있었다. dev push 후 원격 CI 결과를 확인하고 PR 필요·필수 검사·force push/삭제 금지 보호를 적용한다. 원격 적용 결과는 후속 확인 및 최종 응답에서 구분해 기록한다. PR 생성·main 코드/참조 갱신은 하지 않는다.
+구성 커밋 `88cdab5db7f0f3c0e1da0b0ebd3ce18e07bfcc00`의 [원격 CI](https://github.com/guseoh/agent-skills/actions/runs/42268065148)는 **success**였다. `gh run watch 42268065148 --repo guseoh/agent-skills --interval 10 --exit-status`도 exit 0으로 확인했다. 필수 검사명은 실제 check-run의 `Validate skills and Markdown`이며 생성 앱은 GitHub Actions(app_id 15368)다. 이 링크는 구성 커밋의 실행이며 후속 보고서 커밋의 CI 결과와 혼동하지 않는다.
+
+초기 조회에서 main protection은 404(미설정), rulesets는 빈 목록이었으며 연결 계정은 admin 권한이 있었다. CI 성공 후 `gh api --method PUT repos/guseoh/agent-skills/branches/main/protection --input <임시-JSON>`으로 아래 정책을 적용하고 GET으로 재확인했다.
+
+- PR 필요, 위 GitHub Actions 앱의 필수 검사, strict(최신 기준 브랜치) 검사, 관리자에게도 적용.
+- force push·브랜치 삭제 불가, 미해결 conversation 해결 필요.
+- 필수 승인 인원은 **0**: PR 경유와 CI는 요구하지만 별도의 GitHub 리뷰 승인 인원까지 강제하지 않는 최소 정책이다. ChatGPT의 독립 리뷰를 GitHub 승인으로 간주하지 않는다.
+
+`gh api repos/guseoh/agent-skills/branches/main --jq '.commit.sha'` 결과는 초기와 동일한 `ed54fc56cb019a404d4694743a1431bf52edd3eb`다. 보호 메타데이터만 변경했고 PR 생성·main 코드/참조 갱신은 하지 않았다. 후속 보고서 커밋도 dev push CI로 확인하고 최종 응답에서 그 실행을 안내한다.
 
 ## 공개 정보와 한계
 
-현재 README·스킬·tests의 사용자 절대 경로, GitHub/AWS/OpenAI 토큰 패턴, 개인키 헤더를 검사하고 수동으로 추가 diff를 검토했다. 최초 대상 11개 문서에서 탐지 0건이며 최종 보고서 포함 범위도 최종 확인한다. 패턴 검사는 비밀정보 부재를 수학적으로 보장하지 않는다. 공개 GitHub 프로젝트명과 원문 출처는 유지한다.
+현재 README·스킬·tests의 사용자 절대 경로, GitHub/AWS/OpenAI 토큰 패턴, 개인키 헤더를 검사하고 수동으로 추가 diff를 검토했다. 보고서 포함 **12개 문서, 탐지 0건**이었다. 기본 Markdown 검사도 **12개 문서, 오류 0건**, `git diff --cached --check`도 통과했다. 패턴 검사는 비밀정보 부재를 수학적으로 보장하지 않는다. 공개 GitHub 프로젝트명과 원문 출처는 유지한다.
 
 보안 음성 테스트에서 차단 문제는 관찰되지 않았다. 확인하지 못한 접근·운영·클라이언트 동작은 위와 같이 미검증이며, 이번 결과로 모든 프롬프트 주입/유출을 방어한다고 보증하지 않는다. 작업은 dev 커밋·푸시까지이며 ChatGPT의 최종 독립 리뷰를 기다린다.
