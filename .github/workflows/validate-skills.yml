@@ -26,6 +26,9 @@ jobs:
         run: |
           for skill in wiki-capture reverse-engineering backend-architecture-review tech-article-curation; do
             skills-ref validate "$skill"
+            skills-ref validate "plugins/$skill/skills/$skill"
           done
+      - name: Validate plugin packages
+        run: python scripts/package_plugins.py --check
       - name: Check Markdown structure
         run: python scripts/check_markdown.py
