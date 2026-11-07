@@ -1,0 +1,34 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "backend-architecture-review",
+  "version": "0.1.0",
+  "description": "Review Java and Spring architecture tradeoffs.",
+  "author": {
+    "name": "guseoh",
+    "url": "https://github.com/guseoh"
+  },
+  "homepage": "https://github.com/guseoh/agent-skills",
+  "repository": "https://github.com/guseoh/agent-skills",
+  "keywords": [
+    "engineering",
+    "agent-skills"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Backend Architecture Review",
+        "shortDescription": "Review Java and Spring architecture tradeoffs.",
+        "longDescription": "Review requirements, domain, API, transactions, persistence, concurrency, security and operational tradeoffs with verifiable evidence.",
+        "developerName": "guseoh",
+        "category": "Productivity",
+        "capabilities": [
+          "Review Java and Spring designs",
+          "Compare architectural risks and alternatives"
+        ],
+        "defaultPrompt": [
+          "이 백엔드 설계의 요구사항·동시성·트랜잭션 경계를 검토해줘."
+        ]
+      }
+    }
+  }
+}

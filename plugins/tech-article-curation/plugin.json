@@ -1,0 +1,34 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "tech-article-curation",
+  "version": "0.1.0",
+  "description": "Curate Korean tech articles into Obsidian learning notes.",
+  "author": {
+    "name": "guseoh",
+    "url": "https://github.com/guseoh"
+  },
+  "homepage": "https://github.com/guseoh/agent-skills",
+  "repository": "https://github.com/guseoh/agent-skills",
+  "keywords": [
+    "engineering",
+    "agent-skills"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Tech Article Curation",
+        "shortDescription": "Curate Korean tech articles into Obsidian learning notes.",
+        "longDescription": "Review original engineering articles and prepare thorough Obsidian-compatible notes without modifying existing notes or the daily scheduler.",
+        "developerName": "guseoh",
+        "category": "Productivity",
+        "capabilities": [
+          "Evaluate Korean engineering articles",
+          "Prepare detailed Obsidian learning notes"
+        ],
+        "defaultPrompt": [
+          "이 기술 블로그 원문을 직접 확인하고 기존 Obsidian 템플릿으로 정리해줘."
+        ]
+      }
+    }
+  }
+}
