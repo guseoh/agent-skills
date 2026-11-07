@@ -107,4 +107,18 @@ ChatGPT 웹의 플러그인 디렉터리에 자동으로 게시되지 않습니�
 [공식 제출·검토 절차](https://developers.openai.com/plugins/deploy/submission)의
 개발자 인증, 업로드, 검증 및 별도 공개 승인을 거쳐야 합니다.
 웹 설치·클라이언트 자동 선택은 이번 GitHub 변경만으로 검증할 수 없습니다.
+
+ZIP 업로드가 지원되는 계정·워크스페이스라면 저장소를 로컬에 가져온 뒤
+각 패키지의 **내용물**을 ZIP 루트에 넣어 네 개의 독립 파일로 만들 수 있습니다.
+
+```powershell
+New-Item -ItemType Directory -Force dist | Out-Null
+foreach ($name in @('wiki-capture','reverse-engineering','backend-architecture-review','tech-article-curation')) {
+  Compress-Archive -Path "./plugins/$name/*" -DestinationPath "./dist/$name-0.1.0.zip" -Force
+}
+```
+
+공개 플러그인 제출은 계정의 개발자 제출 권한과 검토 절차가 필요합니다.
+ChatGPT 웹에서 개인용 등록·설치가 지원되는지 확인하기 전에는 ZIP 생성만으로
+설치 완료나 공개 등록을 주장하지 않습니다.
 특히 기존 Wiki/Obsidian에 쓰는 권한은 설치 자체가 승인하지 않습니다.
