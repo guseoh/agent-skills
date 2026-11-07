@@ -59,7 +59,7 @@ Markdown 검사는 H1·frontmatter/코드 fence 닫힘·로컬 링크를 확인�
 
 ## ChatGPT / Codex 플러그인 패키지
 
-기존 네 `SKILL.md`는 원본으로 유지하며, [plugins/](plugins/)에 각 스킬을
+기존 네 `SKILL.md`는 원본으로 유지하며, [플러그인 카탈로그](.agents/plugins/marketplace.json)에 각 스킬을
 **독립적인 Skills-only 플러그인**으로 패키징했습니다. 별도 MCP 서버, 스크립트 실행
 후크, 자격 증명은 없습니다. [카탈로그](.agents/plugins/marketplace.json)는
 한 번에 네 개의 플러그인을 선택·설치할 수 있게 노출합니다.
