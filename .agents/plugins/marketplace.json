@@ -1,0 +1,56 @@
+{
+  "name": "guseoh-agent-skills",
+  "interface": {
+    "displayName": "Guseoh Agent Skills"
+  },
+  "plugins": [
+    {
+      "name": "wiki-capture",
+      "source": {
+        "source": "local",
+        "path": "./plugins/wiki-capture"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "reverse-engineering",
+      "source": {
+        "source": "local",
+        "path": "./plugins/reverse-engineering"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "backend-architecture-review",
+      "source": {
+        "source": "local",
+        "path": "./plugins/backend-architecture-review"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "tech-article-curation",
+      "source": {
+        "source": "local",
+        "path": "./plugins/tech-article-curation"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

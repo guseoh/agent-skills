@@ -1,0 +1,34 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "wiki-capture",
+  "version": "0.1.0",
+  "description": "Capture durable engineering decisions in your Wiki.",
+  "author": {
+    "name": "guseoh",
+    "url": "https://github.com/guseoh"
+  },
+  "homepage": "https://github.com/guseoh/agent-skills",
+  "repository": "https://github.com/guseoh/agent-skills",
+  "keywords": [
+    "engineering",
+    "agent-skills"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Wiki Capture",
+        "shortDescription": "Capture durable engineering decisions in your Wiki.",
+        "longDescription": "Prepare reviewable, public-safe updates for durable engineering decisions, lessons and verified project status, using guseoh/cs Wiki policies.",
+        "developerName": "guseoh",
+        "category": "Productivity",
+        "capabilities": [
+          "Assess durable engineering decisions",
+          "Prepare public-safe Wiki review PRs"
+        ],
+        "defaultPrompt": [
+          "이번 작업의 확정된 결정과 검증 한계를 Wiki 기준에 따라 정리해줘."
+        ]
+      }
+    }
+  }
+}
