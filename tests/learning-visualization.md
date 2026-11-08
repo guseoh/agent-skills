@@ -14,7 +14,7 @@
 
 ## 2. Java — 참조값 복사와 매개변수 재할당
 
-[예제 SVG](../cs-learning-visualization/examples/java-pass-by-value.svg): 호출 직후 `member→A, param→A`. 메서드 안에서 `param = new Member()` 실행 직후 `member→A, param→B`. 객체의 필드를 변경한 것이 아니고 호출자 변수도 바뀌지 않는다. 메서드 종료 전 상태를 그렸다는 점과 물리적 JVM 메모리 구조를 주장하지 않는다는 점을 유지한다. 근거: [JLS 15.12.4.2](https://docs.oracle.com/javase/specs/jls/se25/html/jls-15.html#jls-15.12.4.2).
+[예제 SVG](../cs-learning-visualization/examples/java-pass-by-value.svg): 호출 직후 `member→A, param→A`. 메서드 안에서 `param = new Member()` 실행 직후 `member→A, param→B`. 객체 A의 좌표는 두 패널에서 동일한 상대 위치에 유지되어야 한다(두 패널의 가로 원점은 460px 차이). 변경된 것은 매개변수의 참조 대상이며, 객체의 필드를 변경한 것이 아니고 호출자 변수도 바뀌지 않는다. 메서드 종료 전 상태를 그렸다는 점과 물리적 JVM 메모리 구조를 주장하지 않는다는 점을 유지한다. 근거: [JLS 15.12.4.2](https://docs.oracle.com/javase/specs/jls/se25/html/jls-15.html#jls-15.12.4.2).
 
 ## 3. TCP — 바이트 기반 송신 윈도우 이동
 
@@ -42,3 +42,10 @@ CSForge Reader에 적용할 때는 렌더링 보안, 스타일 격리, 기존 �
 - CI 정적 검사: PR에서 확인 예정
 - 브라우저 라이트/다크 시각 QA: **미실행**
 - CSForge Reader 통합·프로덕션 반영: **범위 밖·미실행**
+
+## 교재형 화면의 최종 QA 규칙 (2026-11-08 보완)
+
+- [CSForge 3종 비교 PR #297](https://github.com/guseoh/csforge/pull/297)은 Heap 클릭형과 Java/TCP 정적 상태 비교형을 독립 React/SVG 화면으로 제작한 참고 사례다. 사용자가 로컬에서 확인한 **Heap의 디자인 방향**을 시각 기준으로 삼되, Java/TCP의 최종 Reader 통합까지 완료된 것으로 주장하지 않는다.
+- Java는 동일한 객체 A의 위치가 두 상태에서 같아야 하며, 실제 메서드 코드 `void replace(Member param) { param = new Member("park"); }`를 그림 가까이에 보여준다. SVG 자동 검사는 객체 A의 상대 좌표가 변경되지 않았는지 확인한다.
+- Heap은 트리·배열이 인덱스 기반으로 선택·강조·수식 갱신이 일치하는지 확인한다. TCP는 바이트 구간과 누적 ACK, 상황 가정의 정확성이 우선이다.
+- 플러그인에 포함된 독립 SVG는 별개의 fixture이며, CSForge의 React/Vite 브라우저 QA 결과로 자동 승인하지 않는다. 설치·호출 시험, Reader 통합, 실제 플러그인 fixture의 시각 QA는 독립적으로 기록한다.

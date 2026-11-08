@@ -46,6 +46,11 @@ def validate(name: str) -> None:
     elif name == "java-pass-by-value":
         links = [el.attrib["data-reference"] for el in root.iter() if "data-reference" in el.attrib]
         assert links == ["member:A", "param:A", "member:A", "param:B"], "caller/parameter references changed"
+        objects_a = [el for el in root.iter() if el.attrib.get("data-java-object") == "A"]
+        objects_b = [el for el in root.iter() if el.attrib.get("data-java-object") == "B"]
+        assert len(objects_a) == 2 and len(objects_b) == 1, "object identity annotations changed"
+        assert objects_a[0].attrib["y"] == objects_a[1].attrib["y"], "unchanged object A moved vertically"
+        assert int(objects_a[1].attrib["x"]) - int(objects_a[0].attrib["x"]) == 460, "unchanged object A moved relative to panel"
     elif name == "tcp-sliding-window":
         windows = [el.attrib["data-window"] for el in root.iter() if "data-window" in el.attrib]
         assert windows == ["1000-1399", "1200-1599"], "TCP sender window positions changed"
