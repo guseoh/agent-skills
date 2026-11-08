@@ -1,0 +1,38 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "cs-learning-visualization",
+  "version": "0.1.0",
+  "description": "Make accurate CS learning visuals with readable SVG and selective interaction.",
+  "author": {
+    "name": "guseoh",
+    "url": "https://github.com/guseoh"
+  },
+  "homepage": "https://github.com/guseoh/agent-skills",
+  "repository": "https://github.com/guseoh/agent-skills",
+  "keywords": [
+    "education",
+    "computer-science",
+    "svg",
+    "visualization",
+    "agent-skills"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "CS Learning Visualization",
+        "shortDescription": "Create clear CS learning visuals.",
+        "longDescription": "Design and verify educational SVGs for data structures, Java reference semantics, and backend protocols. Default to static diagrams; add interactions only when they teach a meaningful state change.",
+        "developerName": "guseoh",
+        "category": "Productivity",
+        "capabilities": [
+          "Create accurate textbook-style SVG visualizations",
+          "Review semantic accuracy and reader accessibility",
+          "Use three learning-focused acceptance cases"
+        ],
+        "defaultPrompt": [
+          "Heap 트리·배열, Java Pass-by-Value, TCP Sliding Window를 정확한 교재형 SVG로 시각화하고 검토해줘."
+        ]
+      }
+    }
+  }
+}

@@ -8,6 +8,7 @@ Codex에서 사용하는 독립적인 지침형 스킬 모음입니다. 실행 �
 | [reverse-engineering](reverse-engineering/SKILL.md) | 기존 코드의 구조·실행 흐름과 Git 이력의 설계 배경을 근거로 복원합니다. |
 | [backend-architecture-review](backend-architecture-review/SKILL.md) | Java/Spring 중심의 설계안·기존 아키텍처를 요구사항, 대안, 트레이드오프로 검토합니다. |
 | [tech-article-curation](tech-article-curation/SKILL.md) | 기술 원문을 분석해 기존 Obsidian 템플릿·태그에 맞는 학습 문서를 준비합니다. |
+| [cs-learning-visualization](cs-learning-visualization/SKILL.md) | CS 학습 개념을 정적 SVG 중심으로 시각화하고 Heap·Java·TCP 의미와 Reader 표시를 검수합니다. |
 
 ## 설치와 호출
 
@@ -35,6 +36,7 @@ $wiki-capture 이번 작업의 확정 결정과 검증 한계를 평가해 초�
 $reverse-engineering 주문 생성 요청부터 DB까지 코드와 이력으로 복원해 줘.
 $backend-architecture-review 이 설계의 동시성·트랜잭션 경계를 검토해 줘.
 $tech-article-curation 이 원문을 읽고 기존 템플릿의 학습 문서를 준비해 줘.
+$cs-learning-visualization Heap의 트리·배열 구조를 검증 가능한 SVG로 그려줘.
 ```
 
 ## 권한과 검증 범위
@@ -52,17 +54,19 @@ skills-ref validate wiki-capture
 skills-ref validate reverse-engineering
 skills-ref validate backend-architecture-review
 skills-ref validate tech-article-curation
+skills-ref validate cs-learning-visualization
 python scripts/check_markdown.py
+python scripts/check_learning_visuals.py
 ```
 
 Markdown 검사는 H1·frontmatter/코드 fence 닫힘·로컬 링크를 확인합니다. Mermaid 구문/화면 렌더링이나 문서의 사실성을 대신 검증하지 않습니다. `main`에는 PR과 필수 `Validate skills and Markdown` 검사를 요구하도록 보호 설정을 사용합니다. 현재 적용 상태는 검증 기록에서 확인합니다. 이 작업은 PR 생성이나 `main` 병합을 수행하지 않습니다.
 
 ## ChatGPT / Codex 플러그인 패키지
 
-기존 네 `SKILL.md`는 원본으로 유지하며, [플러그인 카탈로그](.agents/plugins/marketplace.json)에 각 스킬을
+기존 스킬의 `SKILL.md`는 원본으로 유지하며, [플러그인 카탈로그](.agents/plugins/marketplace.json)에 각 스킬을
 **독립적인 Skills-only 플러그인**으로 패키징했습니다. 별도 MCP 서버, 스크립트 실행
 후크, 자격 증명은 없습니다. [카탈로그](.agents/plugins/marketplace.json)는
-한 번에 네 개의 플러그인을 선택·설치할 수 있게 노출합니다.
+한 번에 다섯 개의 플러그인을 선택·설치할 수 있게 노출합니다.
 
 | 플러그인 | 배포 패키지 |
 | --- | --- |
@@ -70,6 +74,7 @@ Markdown 검사는 H1·frontmatter/코드 fence 닫힘·로컬 링크를 확인�
 | Reverse Engineering | [plugins/reverse-engineering](plugins/reverse-engineering/plugin.json) |
 | Backend Architecture Review | [plugins/backend-architecture-review](plugins/backend-architecture-review/plugin.json) |
 | Tech Article Curation | [plugins/tech-article-curation](plugins/tech-article-curation/plugin.json) |
+| CS Learning Visualization | [plugins/cs-learning-visualization](plugins/cs-learning-visualization/plugin.json) |
 
 ### GitHub 마켓플레이스 등록 및 개인 설치
 
@@ -82,9 +87,9 @@ codex plugin marketplace add guseoh/agent-skills --ref main
 codex plugin marketplace list
 ```
 
-병합 전 별도 개발 브랜치에서 검토하려면 `--ref feat/package-four-skills-plugins`을
+병합 전 별도 개발 브랜치에서 검토하려면 `--ref feat/cs-learning-visualization`을
 지정할 수 있습니다. 이후 Codex의 `/plugins` 또는 ChatGPT **데스크톱 앱**의
-Plugins Directory에서 `Guseoh Agent Skills` 소스를 선택하고 네 플러그인을
+Plugins Directory에서 `Guseoh Agent Skills` 소스를 선택하고 다섯 플러그인을
 **각각 설치**한 다음 새 채팅에서 작동을 확인합니다. 명시적 호출은
 `$wiki-capture`처럼 기존 스킬명을 사용하고, 실제 UI의 멘션 표기는 설치 환경을
 확인합니다. 저장소를 Push하는 것만으로 사용자 계정에 자동 설치되지는 않습니다.
@@ -99,6 +104,10 @@ CI는 원본과 배포본의 일치 및 양쪽 스킬 형식을 검증합니다.
 기존 `$HOME/.agents/skills/`에 수동 설치된 같은 이름의 스킬은
 중복 표시될 수 있으므로 변경 전에 설치 상태를 확인하세요.
 
+### CS 학습 시각화 파일과 검증
+
+[세 가지 SVG 예제 갤러리](cs-learning-visualization/examples/index.html)와 [품질 검증 기준](tests/learning-visualization.md)을 포함합니다. 스킬 패키지에도 SVG 및 갤러리가 함께 들어갑니다. Heap은 트리·배열 인덱스, Java는 참조값 복사, TCP는 바이트 단위 누적 ACK를 검증합니다. `python scripts/check_learning_visuals.py`는 SVG 형식·명시적 샘플 상태를 자동 검사하지만, 실제 브라우저 육안 검증과 최신 Reader 통합을 대체하지 않습니다. 그림 원본은 외부 프로젝트에서 복사하지 않고 새로 제작했습니다.
+
 ### ChatGPT 웹 / 공개 플러그인 디렉터리
 
 이 카탈로그는 로컬·GitHub 마켓플레이스 기반 **개발/개인 사용 등록**입니다.
@@ -109,11 +118,11 @@ ChatGPT 웹의 플러그인 디렉터리에 자동으로 게시되지 않습니�
 웹 설치·클라이언트 자동 선택은 이번 GitHub 변경만으로 검증할 수 없습니다.
 
 ZIP 업로드가 지원되는 계정·워크스페이스라면 저장소를 로컬에 가져온 뒤
-각 패키지의 **내용물**을 ZIP 루트에 넣어 네 개의 독립 파일로 만들 수 있습니다.
+각 패키지의 **내용물**을 ZIP 루트에 넣어 다섯 개의 독립 파일로 만들 수 있습니다.
 
 ```powershell
 New-Item -ItemType Directory -Force dist | Out-Null
-foreach ($name in @('wiki-capture','reverse-engineering','backend-architecture-review','tech-article-curation')) {
+foreach ($name in @('wiki-capture','reverse-engineering','backend-architecture-review','tech-article-curation','cs-learning-visualization')) {
   Compress-Archive -Path "./plugins/$name/*" -DestinationPath "./dist/$name-0.1.0.zip" -Force
 }
 ```
