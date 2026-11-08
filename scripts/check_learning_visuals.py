@@ -16,14 +16,14 @@ FORBIDDEN_SVG_TAGS = {
     "script", "foreignobject", "image", "iframe", "animate",
     "animatetransform", "animatemotion", "set", "use", "feimage",
 }
-REMOTE_VALUE = re.compile(r"(?:https?://|file:|javascript:|data:|@import|@font-face|expression\\s*\\()", re.I)
-LOCAL_URL = re.compile(r"^url\\(\\s*#[A-Za-z][A-Za-z0-9_-]*\\s*\\)$", re.I)
+REMOTE_VALUE = re.compile(r"(?:https?://|file:|javascript:|data:|@import|@font-face|expression\s*\()", re.I)
+LOCAL_URL = re.compile(r"^url\(\s*#[A-Za-z][A-Za-z0-9_-]*\s*\)$", re.I)
 
 
 def parse_safe_svg(data: bytes) -> ET.Element:
     """Reject executable or resource-loading SVG content before reviewing fixtures."""
     assert len(data) <= MAX_SVG_BYTES, "oversized SVG"
-    assert not re.search(rb"<!\\s*(?:DOCTYPE|ENTITY)\\b", data, re.I), "DTD/entity declarations forbidden"
+    assert not re.search(rb"<!\s*(?:DOCTYPE|ENTITY)\b", data, re.I), "DTD/entity declarations forbidden"
     root = ET.fromstring(data)
     assert root.tag == SVG_NS + "svg", "not an SVG root"
     for el in root.iter():
@@ -33,12 +33,12 @@ def parse_safe_svg(data: bytes) -> ET.Element:
             attr = key.rsplit("}", 1)[-1].lower()
             assert not (attr.startswith("on") or attr.endswith("href")), f"unsafe SVG attribute: {attr}"
             assert not REMOTE_VALUE.search(value), f"unsafe external resource in {attr}"
-            if re.search(r"url\\s*\\(", value, re.I):
+            if re.search(r"url\s*\(", value, re.I):
                 assert LOCAL_URL.fullmatch(value.strip()), f"nonlocal paint reference: {attr}"
         if bare == "style":
             style = el.text or ""
             assert not REMOTE_VALUE.search(style), "unsafe SVG CSS"
-            assert not re.search(r"url\\s*\\(", style, re.I), "SVG CSS resource loading forbidden"
+            assert not re.search(r"url\s*\(", style, re.I), "SVG CSS resource loading forbidden"
     return root
 
 
@@ -93,9 +93,9 @@ def main() -> int:
     gallery = source_gallery.read_bytes()
     assert gallery == packaged_gallery.read_bytes(), "gallery out of sync"
     assert len(gallery) <= 32_000, "oversized gallery HTML"
-    assert not re.search(rb"<\\s*(?:script|iframe|object|embed|base|link)\\b", gallery, re.I), "active gallery content"
-    assert not re.search(rb"\\bon[a-z]+\\s*=", gallery, re.I), "gallery event-handler attribute"
-    assert not re.search(rb"(?:https?://|file:|javascript:|data:|@import|@font-face|url\\s*\\()", gallery, re.I), "gallery resource-loading content"
+    assert not re.search(rb"<\s*(?:script|iframe|object|embed|base|link)\b", gallery, re.I), "active gallery content"
+    assert not re.search(rb"\bon[a-z]+\s*=", gallery, re.I), "gallery event-handler attribute"
+    assert not re.search(rb"(?:https?://|file:|javascript:|data:|@import|@font-face|url\s*\()", gallery, re.I), "gallery resource-loading content"
     print("PASS: 3 SVG fixtures and gallery")
     return 0
 
