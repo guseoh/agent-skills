@@ -38,7 +38,11 @@ def parse_safe_svg(data: bytes) -> ET.Element:
         if bare == "style":
             style = el.text or ""
             assert not REMOTE_VALUE.search(style), "unsafe SVG CSS"
-            assert not re.search(r"url\s*\(", style, re.I), "SVG CSS resource loading forbidden"
+            # SVGs legitimately use local paint markers (url(#arrow)).
+            # Accept those identifiers but no CSS remote/dynamic resource URLs.
+            css_refs = re.findall(r"url\s*\([^)]*\)", style, re.I)
+            assert len(css_refs) == len(re.findall(r"url\s*\(", style, re.I)), "malformed SVG CSS URL"
+            assert all(LOCAL_URL.fullmatch(ref) for ref in css_refs), "nonlocal SVG CSS resource"
     return root
 
 
