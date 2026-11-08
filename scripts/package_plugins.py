@@ -27,6 +27,26 @@ EXTRAS = {
 SCHEMA = "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json"
 
 
+def has_symlink_component(path: Path, trusted_root: Path = ROOT) -> bool:
+    """Reject symlinked parent directories as well as symlinked leaf files.
+
+    Without inspecting parents, --sync could follow a symlinked skills/ folder
+    and write outside the repository even when target.is_symlink() is False.
+    """
+    try:
+        components = path.relative_to(trusted_root).parts
+    except ValueError:
+        return True
+    if ".." in components:
+        return True
+    current = trusted_root
+    for part in components:
+        current = current / part
+        if current.is_symlink():
+            return True
+    return False
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     mode = parser.add_mutually_exclusive_group(required=True)
@@ -35,7 +55,11 @@ def main() -> int:
     args = parser.parse_args()
 
     errors: list[str] = []
-    catalog = json.loads((ROOT / ".agents/plugins/marketplace.json").read_text(encoding="utf-8"))
+    catalog_path = ROOT / ".agents/plugins/marketplace.json"
+    if has_symlink_component(catalog_path):
+        print("ERROR: marketplace path traverses a symlink")
+        return 1
+    catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
     entries = catalog.get("plugins", [])
     by_name = {entry.get("name"): entry for entry in entries}
     if len(entries) != len(NAMES) or set(by_name) != set(NAMES):
@@ -47,7 +71,7 @@ def main() -> int:
         for subpath in ("SKILL.md", *EXTRAS.get(name, ())):
             source = ROOT / name / subpath
             target = package_root / "skills" / name / subpath
-            if any(p.is_symlink() for p in (source, target, manifest_path)):
+            if any(has_symlink_component(p) for p in (source, target, manifest_path)):
                 errors.append(f"{name}/{subpath}: symlinks are not allowed")
                 continue
             if not source.is_file():
@@ -61,6 +85,9 @@ def main() -> int:
                     print(f"Synced {target.relative_to(ROOT)}")
             if not target.is_file() or target.read_bytes() != content:
                 errors.append(f"{name}/{subpath}: plugin copy differs from canonical source")
+        if has_symlink_component(manifest_path):
+            errors.append(f"{name}: manifest path traverses a symlink")
+            continue
         try:
             manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError):

@@ -4,12 +4,42 @@ This validates metadata and encoded example states, NOT visual layout or semanti
 beyond these particular examples. No external dependencies required.
 """
 from pathlib import Path
+import re
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
 NAME = "cs-learning-visualization"
 SVG_NS = "{http://www.w3.org/2000/svg}"
 CASES = ("heap-tree-array", "java-pass-by-value", "tcp-sliding-window")
+MAX_SVG_BYTES = 256_000
+FORBIDDEN_SVG_TAGS = {
+    "script", "foreignobject", "image", "iframe", "animate",
+    "animatetransform", "animatemotion", "set", "use", "feimage",
+}
+REMOTE_VALUE = re.compile(r"(?:https?://|file:|javascript:|data:|@import|@font-face|expression\\s*\\()", re.I)
+LOCAL_URL = re.compile(r"^url\\(\\s*#[A-Za-z][A-Za-z0-9_-]*\\s*\\)$", re.I)
+
+
+def parse_safe_svg(data: bytes) -> ET.Element:
+    """Reject executable or resource-loading SVG content before reviewing fixtures."""
+    assert len(data) <= MAX_SVG_BYTES, "oversized SVG"
+    assert not re.search(rb"<!\\s*(?:DOCTYPE|ENTITY)\\b", data, re.I), "DTD/entity declarations forbidden"
+    root = ET.fromstring(data)
+    assert root.tag == SVG_NS + "svg", "not an SVG root"
+    for el in root.iter():
+        bare = el.tag.rsplit("}", 1)[-1].lower()
+        assert bare not in FORBIDDEN_SVG_TAGS, f"unsafe SVG element: {bare}"
+        for key, value in el.attrib.items():
+            attr = key.rsplit("}", 1)[-1].lower()
+            assert not (attr.startswith("on") or attr.endswith("href")), f"unsafe SVG attribute: {attr}"
+            assert not REMOTE_VALUE.search(value), f"unsafe external resource in {attr}"
+            if re.search(r"url\\s*\\(", value, re.I):
+                assert LOCAL_URL.fullmatch(value.strip()), f"nonlocal paint reference: {attr}"
+        if bare == "style":
+            style = el.text or ""
+            assert not REMOTE_VALUE.search(style), "unsafe SVG CSS"
+            assert not re.search(r"url\\s*\\(", style, re.I), "SVG CSS resource loading forbidden"
+    return root
 
 
 def validate(name: str) -> None:
@@ -17,8 +47,7 @@ def validate(name: str) -> None:
     packaged = ROOT / "plugins" / NAME / "skills" / NAME / "examples" / f"{name}.svg"
     data = source.read_bytes()
     assert data == packaged.read_bytes(), f"{name}: source and packaged SVG differ"
-    root = ET.fromstring(data)
-    assert root.tag == SVG_NS + "svg", f"{name}: not SVG"
+    root = parse_safe_svg(data)
     assert root.attrib.get("role") == "img", f"{name}: role missing"
     assert root.attrib.get("aria-labelledby") == "viz-title viz-desc", f"{name}: accessibility labeling missing"
     assert root.attrib.get("data-example") == name, f"{name}: wrong example"
@@ -29,12 +58,6 @@ def validate(name: str) -> None:
     assert (titles[0].text or "").strip() and (descriptions[0].text or "").strip(), f"{name}: empty description"
     style = root.find(SVG_NS + "style")
     assert style is not None and "prefers-color-scheme:dark" in (style.text or ""), f"{name}: dark theme missing"
-    unsafe_tags = {"script", "foreignObject", "image", "iframe", "animate"}
-    for el in root.iter():
-        bare = el.tag.rsplit("}", 1)[-1]
-        assert bare not in unsafe_tags, f"{name}: disallowed tag {bare}"
-        assert all(not k.endswith("href") for k in el.attrib), f"{name}: external references forbidden"
-
     if name == "heap-tree-array":
         nodes = root.findall(f".//{SVG_NS}circle")
         arrays = [el for el in root.iter() if "data-array-index" in el.attrib]
@@ -67,7 +90,12 @@ def main() -> int:
         validate(name)
     source_gallery = ROOT / NAME / "examples/index.html"
     packaged_gallery = ROOT / "plugins" / NAME / "skills" / NAME / "examples/index.html"
-    assert source_gallery.read_bytes() == packaged_gallery.read_bytes(), "gallery out of sync"
+    gallery = source_gallery.read_bytes()
+    assert gallery == packaged_gallery.read_bytes(), "gallery out of sync"
+    assert len(gallery) <= 32_000, "oversized gallery HTML"
+    assert not re.search(rb"<\\s*(?:script|iframe|object|embed|base|link)\\b", gallery, re.I), "active gallery content"
+    assert not re.search(rb"\\bon[a-z]+\\s*=", gallery, re.I), "gallery event-handler attribute"
+    assert not re.search(rb"(?:https?://|file:|javascript:|data:|@import|@font-face|url\\s*\\()", gallery, re.I), "gallery resource-loading content"
     print("PASS: 3 SVG fixtures and gallery")
     return 0
 

@@ -32,5 +32,7 @@ jobs:
         run: python scripts/package_plugins.py --check
       - name: Check educational SVG examples
         run: python scripts/check_learning_visuals.py
+      - name: Exercise plugin safety boundary
+        run: python scripts/test_plugin_security.py
       - name: Check Markdown structure
         run: python scripts/check_markdown.py

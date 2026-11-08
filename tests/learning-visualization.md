@@ -49,3 +49,11 @@ CSForge Reader에 적용할 때는 렌더링 보안, 스타일 격리, 기존 �
 - Java는 동일한 객체 A의 위치가 두 상태에서 같아야 하며, 실제 메서드 코드 `void replace(Member param) { param = new Member("park"); }`를 그림 가까이에 보여준다. SVG 자동 검사는 객체 A의 상대 좌표가 변경되지 않았는지 확인한다.
 - Heap은 트리·배열이 인덱스 기반으로 선택·강조·수식 갱신이 일치하는지 확인한다. TCP는 바이트 구간과 누적 ACK, 상황 가정의 정확성이 우선이다.
 - 플러그인에 포함된 독립 SVG는 별개의 fixture이며, CSForge의 React/Vite 브라우저 QA 결과로 자동 승인하지 않는다. 설치·호출 시험, Reader 통합, 실제 플러그인 fixture의 시각 QA는 독립적으로 기록한다.
+
+## 2026-11-08 security audit enhancements
+
+- Plugin is **skills-only**: no MCP server, OAuth connection, secret-scoped API, executable plugin hook, install-time shell script or outbound telemetry is included. Marketplace `authentication: ON_INSTALL` is the supported policy enum/timing and does not by itself create an OAuth connection.
+- Canonical skills and packaged copies must match byte-for-byte. The packaging tool now refuses **symlinked parent directories** as well as leaf symlinks, including in `--sync` mode. This reduces accidental writes outside the checked-out repository.
+- SVG fixtures reject DTDs/entities, scripts, event handlers, external HTTP/file/data resources, embedded foreign objects and CSS resource imports; only explicit local `url(#id)` paint references are accepted. The sample gallery rejects active HTML and external resource-loading URLs.
+- CI adds adversarial tests that inject example SVG event attributes, external references, CSS imports and path-traversal/symlink cases. These protections apply to the **three bundled examples**; the skill's future generated images still require separate review.
+- The existing CI fetches a **pinned** official skills validator commit and runs in a job with `contents: read`. Existing pinned upstream validator dependency was not expanded by this PR.
