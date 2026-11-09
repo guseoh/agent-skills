@@ -1,0 +1,41 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "concept-learning",
+  "version": "0.1.0",
+  "description": "Teach Java/Spring backend concepts with consistent Korean instructor-style explanations, code, Korean sources and visuals.",
+  "author": {
+    "name": "guseoh",
+    "url": "https://github.com/guseoh"
+  },
+  "homepage": "https://github.com/guseoh/agent-skills",
+  "repository": "https://github.com/guseoh/agent-skills",
+  "keywords": [
+    "education",
+    "backend",
+    "java",
+    "spring",
+    "computer-science",
+    "learning",
+    "agent-skills"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Concept Learning",
+        "shortDescription": "Teach backend concepts with consistent Korean explanations.",
+        "longDescription": "An instructor for aspiring Java/Spring backend developers. Explain a user-selected roadmap topic or standalone concept using readable connected paragraphs, concrete code/runtime behavior, verified Korean engineering sources and appropriate instructional images. Does not design roadmaps or track progress.",
+        "developerName": "guseoh",
+        "category": "Productivity",
+        "capabilities": [
+          "Teach user-chosen Java/Spring/backend concepts at a job-seeker's level",
+          "Explain real behavior with code and connected Korean prose",
+          "Integrate verified Korean technical sources and useful images"
+        ],
+        "defaultPrompt": [
+          "$concept-learning 다형성1부터 진행하자.",
+          "$concept-learning Spring의 Bean 생명주기 설명해줘."
+        ]
+      }
+    }
+  }
+}
