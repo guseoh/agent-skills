@@ -116,22 +116,22 @@ CI는 원본과 배포본의 일치 및 양쪽 스킬 형식을 검증합니다.
 
 ### 개념 학습 전용 플러그인
 
-[Concept Learning](concept-learning/SKILL.md)은 **Java/Spring 백엔드 서버 개발자 취업 준비생을 위한 개념 강사**다. 확정된 로드맵에서 사용자가 주제를 정해 `다형성1부터 진행하자`라고 말하거나, 로드맵과 무관하게 `Spring의 Bean 생명주기 설명해줘`라고 말하더라도 **같은 강사형 글 규칙**을 적용한다. 플러그인은 로드맵 설계·진도 관리·자동 다음 주제 이동을 담당하지 않는다.
+[Concept Learning](concept-learning/SKILL.md)은 **Java/Spring 백엔드 서버 개발자 취업 준비생을 위한 개념 강사**입니다. 확정된 로드맵에서 `다형성1부터 진행하자`라고 하거나 독립적으로 `Spring Bean 생명주기 설명해줘`라고 해도 같은 교수법을 적용합니다. 로드맵 설계·진도 관리에는 관여하지 않습니다.
 
-구체적인 기준은 [교수법 26개 규칙](concept-learning/references/teaching-rules.md),
+**참고 자료 정책:** 공식 문서로 기술 사실을 검증하고, **개인 개발 기술 블로그(Tistory·Velog·Medium·GitHub.io·독립 블로그)와 한국 IT 기업 기술 블로그**의 관련 글을 실제로 탐색·검토해 본문에 핵심 내용을 반영합니다. **한빛미디어와 위키독스는 추천·참고 링크에서 제외**합니다. 블로그의 신뢰도는 개별 글의 정확성과 근거로 판단합니다.
+
+**이미지 정책:** 그림이 도움이 된다면 **실제 기술 블로그·강의에 포함된 이미지 탐색과 본문 활용이 우선**입니다. 원본 내용·출처·이용 조건을 확인하고 설명과 연결하며, 자체 도식은 실제 이미지가 부족한 부분에만 보조적으로 씁니다. 이미지가 확보되지 않은 경우 빈 자리·가짜 출처·자동 생성 도식 남발을 피합니다.
+
+**심화와 글 구성:** 배경·원리·코드 실행·실무 판단을 깊이 설명하고, 관련된 추가 개념·키워드·실제로 읽은 심화 글을 선택적으로 제시합니다. **글을 무조건 길게 만들지 않으며**, 연결된 문단과 핵심 글머리표·표를 내용에 따라 조합합니다. 정상적인 Markdown 표 형식을 점검합니다.
+
+상세 규칙은 [교수법 26개 항목](concept-learning/references/teaching-rules.md),
 [분야별 심화 기준](concept-learning/references/subject-guidance.md),
-[국내 자료·이미지 활용](concept-learning/references/source-and-visual-guidance.md),
-[주제 맥락의 경계](concept-learning/references/topic-context.md),
-[품질 합격·실패 예시](concept-learning/references/quality-cases.md),
-[짧은 프로젝트 연결 지침](concept-learning/references/project-instructions.md)에 있다.
+[자료·이미지·심화 운영 기준](concept-learning/references/source-and-visual-guidance.md),
+[주제 선택과 설명의 경계](concept-learning/references/topic-context.md),
+[합격·실패 사례](concept-learning/references/quality-cases.md),
+[프로젝트 연결 지침](concept-learning/references/project-instructions.md)을 참고합니다.
 
-- 한 줄짜리 문장/문단의 반복을 피하고 `~이다`체의 자연스러운 **연결된 설명 문단**을 사용한다. 소제목·글머리표·표는 필요할 때만 쓴다.
-- 공식 문서로 기술 사실을 확인하고 **관련된 한국 IT 기업 기술 블로그와 검증된 한국어 자료**를 적극 탐색해 본문에 실제 내용을 반영한다. 링크 나열만으로 강의를 대신하지 않는다.
-- 이미지가 유익한 경우 공개 강의 그림·기술 구조도를 **실제로 확인해** 출처·이용 조건에 맞게 사용하고, 적합한 원본이 없다면 필요할 때만 정확한 자체 도식을 만든다.
-- 개념에 필요한 코드 뒤에서는 실제 호출·상태·결과를 해설한다. 실습·퀴즈·노트 저장·Wiki/Obsidian 외부 쓰기는 기본 동작이 아니다. `cs-learning-visualization`과 필수 의존성을 갖지 않는다.
-
-스킬 등록만으로 모든 새 ChatGPT 채팅에서 자동 선택되거나 이전 PDF를 읽을 수 있는 것은 아니다. 설치 및 실제 호출·학습 품질은 별도 검증이 필요하다.
-[개념 학습 테스트 명세](tests/concept-learning.md)에는 정적 검증과 실제 모델/클라이언트 검증을 구분해 기록한다.
+플러그인 호출만으로 이전 세션의 PDF·학습 진도가 자동 제공되지는 않으며, 웹·이미지 접근이 제한된 환경에서는 확인한 범위만 설명합니다. 실습·퀴즈·노트 작성·Wiki 저장도 자동으로 수행하지 않습니다.
 
 ### ChatGPT 웹 / 공개 플러그인 디렉터리
 

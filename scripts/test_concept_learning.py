@@ -68,6 +68,33 @@ class ConceptLearningContract(unittest.TestCase):
         self.assertIn("한 줄 문장/한 줄 문단", cases)
         self.assertIn("코드 블록 뒤", skill)
 
+    def test_independent_korean_blogs_and_exclusions(self) -> None:
+        skill = self.source("SKILL.md")
+        sources = self.source("references/source-and-visual-guidance.md")
+        rules = self.source("references/teaching-rules.md")
+        for term in ("Tistory", "Velog", "Medium", "GitHub.io", "hudi.blog",
+                     "한국 IT 기업", "한빛미디어", "위키독스"):
+            with self.subTest(term=term):
+                self.assertIn(term, sources)
+        self.assertIn("개인 개발 기술 블로그", skill)
+        self.assertIn("한빛미디어", rules)
+        self.assertIn("위키독스", rules)
+        self.assertIn("참고 링크 후보에서 제외", sources)
+
+    def test_image_priority_deeper_learning_and_format_balance(self) -> None:
+        skill = self.source("SKILL.md")
+        sources = self.source("references/source-and-visual-guidance.md")
+        cases = self.source("references/quality-cases.md")
+        for term in ("실제 이미지", "도식", "보조", "출처", "이용 조건", "본문"):
+            with self.subTest(term=term):
+                self.assertIn(term, sources)
+        for term in ("심화", "키워드", "글머리표", "Markdown 표", "무조건"):
+            with self.subTest(term=term):
+                self.assertTrue(term in skill or term in sources)
+        self.assertIn("객체지향 강의에 대한 실제 실패 교정", cases)
+        self.assertIn("이미지 실패", cases)
+        self.assertIn("한빛미디어·위키독스", cases)
+
     def test_complete_teaching_rules(self) -> None:
         guidance = self.source(EXTRAS[0])
         numbers = [int(n) for n in re.findall(r"(?m)^(\d{1,2})\. ", guidance)]

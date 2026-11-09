@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "concept-learning",
-  "version": "0.1.0",
-  "description": "Teach Java/Spring backend concepts with consistent Korean instructor-style explanations, code, Korean sources and visuals.",
+  "version": "0.2.0",
+  "description": "Teach Java/Spring backend concepts in Korean using developer blogs, image-first explanations, readable depth and optional follow-up topics.",
   "author": {
     "name": "guseoh",
     "url": "https://github.com/guseoh"
@@ -22,14 +22,14 @@
     "com.openai": {
       "interface": {
         "displayName": "Concept Learning",
-        "shortDescription": "Teach backend concepts with consistent Korean explanations.",
-        "longDescription": "An instructor for aspiring Java/Spring backend developers. Explain a user-selected roadmap topic or standalone concept using readable connected paragraphs, concrete code/runtime behavior, verified Korean engineering sources and appropriate instructional images. Does not design roadmaps or track progress.",
+        "shortDescription": "Learn backend concepts with verified blog examples and real images.",
+        "longDescription": "An instructor for aspiring Java/Spring backend developers. Teaches a selected topic with actual behavior and code, prioritizes independent Korean developer blogs and Korean engineering-company blogs (not Hanbit Media or Wikidocs), real verified explanatory images over generated diagrams, and relevant deeper concepts. Chooses prose, bullets and tables by clarity rather than length. Does not manage roadmaps or progress.",
         "developerName": "guseoh",
         "category": "Productivity",
         "capabilities": [
-          "Teach user-chosen Java/Spring/backend concepts at a job-seeker's level",
-          "Explain real behavior with code and connected Korean prose",
-          "Integrate verified Korean technical sources and useful images"
+          "Teach Java/Spring/backend topics with concrete code and runtime behavior",
+          "Prioritize Korean individual developer blogs and engineering-company sources",
+          "Use relevant real images first; offer selective deeper topics and readable bullets"
         ],
         "defaultPrompt": [
           "$concept-learning 다형성1부터 진행하자.",
