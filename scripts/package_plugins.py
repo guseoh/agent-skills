@@ -15,8 +15,15 @@ NAMES = (
     "backend-architecture-review",
     "tech-article-curation",
     "cs-learning-visualization",
+    "concept-learning",
 )
 EXTRAS = {
+    "concept-learning": (
+        "references/teaching-rules.md",
+        "references/subject-guidance.md",
+        "references/quality-cases.md",
+        "references/project-instructions.md",
+    ),
     "cs-learning-visualization": (
         "examples/heap-tree-array.svg",
         "examples/java-pass-by-value.svg",
