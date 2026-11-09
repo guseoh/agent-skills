@@ -12,11 +12,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 NAME = "concept-learning"
 EXTRAS = (
-    "references/roadmap-workflow.md",
     "references/teaching-rules.md",
     "references/subject-guidance.md",
     "references/quality-cases.md",
     "references/project-instructions.md",
+    "references/roadmap-workflow.md",
 )
 
 
@@ -46,7 +46,7 @@ class ConceptLearningContract(unittest.TestCase):
         prompts = self.source("references/project-instructions.md")
         for required in ("로드맵 기반 강의 진행", "로드맵 진행 규칙", "현재 로드맵 주제 강의"):
             self.assertIn(required, skill)
-        for required in ("Spring", "Database", "이어서", "다음 주제", "단독 질문", "완료 여부", "목차만"):
+        for required in ("Spring", "Database", "이어서", "다음 주제", "단독 질문", "완료 여부", "개요를 열거"):
             self.assertIn(required, workflow)
         for required in ("Spring 학습 시작하자", "Database 학습 이어서 진행해"):
             self.assertIn(required, examples)
