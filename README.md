@@ -38,8 +38,8 @@ $reverse-engineering 주문 생성 요청부터 DB까지 코드와 이력으로 
 $backend-architecture-review 이 설계의 동시성·트랜잭션 경계를 검토해 줘.
 $tech-article-curation 이 원문을 읽고 기존 템플릿의 학습 문서를 준비해 줘.
 $cs-learning-visualization Heap의 트리·배열 구조를 검증 가능한 SVG로 그려줘.
-$concept-learning Spring 로드맵 학습 시작하자
-$concept-learning Database 로드맵 이어서 진행해
+$concept-learning 다형성1부터 진행하자.
+$concept-learning Spring의 Bean 생명주기 설명해줘.
 ```
 
 ## 권한과 검증 범위
@@ -116,21 +116,22 @@ CI는 원본과 배포본의 일치 및 양쪽 스킬 형식을 검증합니다.
 
 ### 개념 학습 전용 플러그인
 
-[Concept Learning](concept-learning/SKILL.md)은 **설명 방식의 일관성**을 담당하고,
-학습 진도·PDF·커리큘럼은 현재 프로젝트에서 관리합니다. **기본 사용법은 확정된 과목별 로드맵을 따라 주제 하나씩 강의하고, 질문을 통해 심화한 뒤 사용자가 요청한 경우에만 다음 주제로 이동하는 방식**입니다. 특정 개념의 단독 질문도 지원합니다.
-[로드맵 진행 규칙](concept-learning/references/roadmap-workflow.md),
-[교수법 26개 규칙](concept-learning/references/teaching-rules.md),
-[분야별 심화 기준](concept-learning/references/subject-guidance.md),
-[학습 품질 사례](concept-learning/references/quality-cases.md) 및
-[짧은 프로젝트 연결 지침](concept-learning/references/project-instructions.md)을
-원본과 패키지에 함께 포함합니다.
+[Concept Learning](concept-learning/SKILL.md)은 **Java/Spring 백엔드 서버 개발자 취업 준비생을 위한 개념 강사**다. 확정된 로드맵에서 사용자가 주제를 정해 `다형성1부터 진행하자`라고 말하거나, 로드맵과 무관하게 `Spring의 Bean 생명주기 설명해줘`라고 말하더라도 **같은 강사형 글 규칙**을 적용한다. 플러그인은 로드맵 설계·진도 관리·자동 다음 주제 이동을 담당하지 않는다.
 
-별도 Quiz·실습·학습 노트 저장·다음 강의 진행을 자동 실행하지 않으며,
-기존 `cs-learning-visualization`과 의존하지 않습니다.
-스킬 등록만으로 모든 새 ChatGPT 채팅에서 자동 선택되거나 이전 PDF·진도를
-자동으로 읽는 것은 아닙니다. 설치 환경에서 명시적 호출을 검증해야 합니다.
-검증 사례 및 미실행 항목은 [concept-learning 테스트 명세](tests/concept-learning.md)에
-구분해 기록합니다.
+구체적인 기준은 [교수법 26개 규칙](concept-learning/references/teaching-rules.md),
+[분야별 심화 기준](concept-learning/references/subject-guidance.md),
+[국내 자료·이미지 활용](concept-learning/references/source-and-visual-guidance.md),
+[주제 맥락의 경계](concept-learning/references/topic-context.md),
+[품질 합격·실패 예시](concept-learning/references/quality-cases.md),
+[짧은 프로젝트 연결 지침](concept-learning/references/project-instructions.md)에 있다.
+
+- 한 줄짜리 문장/문단의 반복을 피하고 `~이다`체의 자연스러운 **연결된 설명 문단**을 사용한다. 소제목·글머리표·표는 필요할 때만 쓴다.
+- 공식 문서로 기술 사실을 확인하고 **관련된 한국 IT 기업 기술 블로그와 검증된 한국어 자료**를 적극 탐색해 본문에 실제 내용을 반영한다. 링크 나열만으로 강의를 대신하지 않는다.
+- 이미지가 유익한 경우 공개 강의 그림·기술 구조도를 **실제로 확인해** 출처·이용 조건에 맞게 사용하고, 적합한 원본이 없다면 필요할 때만 정확한 자체 도식을 만든다.
+- 개념에 필요한 코드 뒤에서는 실제 호출·상태·결과를 해설한다. 실습·퀴즈·노트 저장·Wiki/Obsidian 외부 쓰기는 기본 동작이 아니다. `cs-learning-visualization`과 필수 의존성을 갖지 않는다.
+
+스킬 등록만으로 모든 새 ChatGPT 채팅에서 자동 선택되거나 이전 PDF를 읽을 수 있는 것은 아니다. 설치 및 실제 호출·학습 품질은 별도 검증이 필요하다.
+[개념 학습 테스트 명세](tests/concept-learning.md)에는 정적 검증과 실제 모델/클라이언트 검증을 구분해 기록한다.
 
 ### ChatGPT 웹 / 공개 플러그인 디렉터리
 
