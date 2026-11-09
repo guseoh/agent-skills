@@ -2,7 +2,7 @@
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "concept-learning",
   "version": "0.1.0",
-  "description": "Teach backend and CS concepts with rigorous Korean explanations and source-grounded examples.",
+  "description": "Teach Java, Spring, Database and backend concepts one topic at a time along existing learning roadmaps.",
   "author": {
     "name": "guseoh",
     "url": "https://github.com/guseoh"
@@ -22,8 +22,8 @@
     "com.openai": {
       "interface": {
         "displayName": "Concept Learning",
-        "shortDescription": "Learn backend and CS concepts with consistent teaching.",
-        "longDescription": "A Korean instructor-style learning skill for Java, Spring, JPA, Security, databases, Linux, systems design and AI. Prioritizes real runtime behavior, readable code examples, official sources and Korean engineering materials. Does not change progress or publish notes by default.",
+        "shortDescription": "Learn backend subjects one roadmap topic at a time.",
+        "longDescription": "Follow the user's confirmed subject roadmap for Spring, Database, Java, JPA, Security and related topics. Teach one complete topic in Korean with accurate runtime behavior, code examples and source-grounded references; deepen through questions and advance only when requested.",
         "developerName": "guseoh",
         "category": "Productivity",
         "capabilities": [
@@ -32,7 +32,8 @@
           "Adapt explanations to the user's learning goal and materials"
         ],
         "defaultPrompt": [
-          "$concept-learning Java 다형성의 실제 메서드 호출 원리를 코드와 함께 설명해줘."
+          "$concept-learning Spring 로드맵 학습 시작하자",
+          "$concept-learning Database 로드맵 이어서 진행해"
         ]
       }
     }

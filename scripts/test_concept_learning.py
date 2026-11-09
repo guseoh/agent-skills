@@ -12,6 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 NAME = "concept-learning"
 EXTRAS = (
+    "references/roadmap-workflow.md",
     "references/teaching-rules.md",
     "references/subject-guidance.md",
     "references/quality-cases.md",
@@ -37,6 +38,19 @@ class ConceptLearningContract(unittest.TestCase):
                 self.assertTrue(canonical.is_file())
                 self.assertTrue(packaged.is_file())
                 self.assertEqual(canonical.read_bytes(), packaged.read_bytes())
+
+    def test_roadmap_first_learning_contract(self) -> None:
+        skill = self.source("SKILL.md")
+        workflow = self.source("references/roadmap-workflow.md")
+        examples = self.source("references/quality-cases.md")
+        prompts = self.source("references/project-instructions.md")
+        for required in ("로드맵 기반 강의 진행", "로드맵 진행 규칙", "현재 로드맵 주제 강의"):
+            self.assertIn(required, skill)
+        for required in ("Spring", "Database", "이어서", "다음 주제", "단독 질문", "완료 여부", "목차만"):
+            self.assertIn(required, workflow)
+        for required in ("Spring 학습 시작하자", "Database 학습 이어서 진행해"):
+            self.assertIn(required, examples)
+        self.assertIn("과목별 로드맵을 따라 한 주제씩", prompts)
 
     def test_complete_teaching_rules(self) -> None:
         guidance = self.source(EXTRAS[0])

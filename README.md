@@ -38,7 +38,8 @@ $reverse-engineering 주문 생성 요청부터 DB까지 코드와 이력으로 
 $backend-architecture-review 이 설계의 동시성·트랜잭션 경계를 검토해 줘.
 $tech-article-curation 이 원문을 읽고 기존 템플릿의 학습 문서를 준비해 줘.
 $cs-learning-visualization Heap의 트리·배열 구조를 검증 가능한 SVG로 그려줘.
-$concept-learning Java 다형성의 실제 메서드 호출 원리를 코드와 함께 설명해줘.
+$concept-learning Spring 로드맵 학습 시작하자
+$concept-learning Database 로드맵 이어서 진행해
 ```
 
 ## 권한과 검증 범위
@@ -116,7 +117,8 @@ CI는 원본과 배포본의 일치 및 양쪽 스킬 형식을 검증합니다.
 ### 개념 학습 전용 플러그인
 
 [Concept Learning](concept-learning/SKILL.md)은 **설명 방식의 일관성**을 담당하고,
-학습 진도·PDF·커리큘럼은 현재 프로젝트에서 관리합니다.
+학습 진도·PDF·커리큘럼은 현재 프로젝트에서 관리합니다. **기본 사용법은 확정된 과목별 로드맵을 따라 주제 하나씩 강의하고, 질문을 통해 심화한 뒤 사용자가 요청한 경우에만 다음 주제로 이동하는 방식**입니다. 특정 개념의 단독 질문도 지원합니다.
+[로드맵 진행 규칙](concept-learning/references/roadmap-workflow.md),
 [교수법 26개 규칙](concept-learning/references/teaching-rules.md),
 [분야별 심화 기준](concept-learning/references/subject-guidance.md),
 [학습 품질 사례](concept-learning/references/quality-cases.md) 및

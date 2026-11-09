@@ -19,6 +19,7 @@ NAMES = (
 )
 EXTRAS = {
     "concept-learning": (
+        "references/roadmap-workflow.md",
         "references/teaching-rules.md",
         "references/subject-guidance.md",
         "references/quality-cases.md",
