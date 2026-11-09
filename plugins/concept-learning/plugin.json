@@ -1,0 +1,40 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "concept-learning",
+  "version": "0.1.0",
+  "description": "Teach backend and CS concepts with rigorous Korean explanations and source-grounded examples.",
+  "author": {
+    "name": "guseoh",
+    "url": "https://github.com/guseoh"
+  },
+  "homepage": "https://github.com/guseoh/agent-skills",
+  "repository": "https://github.com/guseoh/agent-skills",
+  "keywords": [
+    "education",
+    "backend",
+    "java",
+    "spring",
+    "computer-science",
+    "learning",
+    "agent-skills"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Concept Learning",
+        "shortDescription": "Learn backend and CS concepts with consistent teaching.",
+        "longDescription": "A Korean instructor-style learning skill for Java, Spring, JPA, Security, databases, Linux, systems design and AI. Prioritizes real runtime behavior, readable code examples, official sources and Korean engineering materials. Does not change progress or publish notes by default.",
+        "developerName": "guseoh",
+        "category": "Productivity",
+        "capabilities": [
+          "Teach concept internals with accurate examples",
+          "Explain Java/Spring/JPA and system behavior",
+          "Adapt explanations to the user's learning goal and materials"
+        ],
+        "defaultPrompt": [
+          "$concept-learning Java 다형성의 실제 메서드 호출 원리를 코드와 함께 설명해줘."
+        ]
+      }
+    }
+  }
+}
