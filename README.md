@@ -116,22 +116,19 @@ CI는 원본과 배포본의 일치 및 양쪽 스킬 형식을 검증합니다.
 
 ### 개념 학습 전용 플러그인
 
-[Concept Learning](concept-learning/SKILL.md)은 **Java/Spring 백엔드 서버 개발자 취업 준비생을 위한 개념 강사**입니다. 확정된 로드맵에서 `다형성1부터 진행하자`라고 하거나 독립적으로 `Spring Bean 생명주기 설명해줘`라고 해도 같은 교수법을 적용합니다. 로드맵 설계·진도 관리에는 관여하지 않습니다.
+[Concept Learning](concept-learning/SKILL.md)은 **Java/Spring 백엔드 신입~2년 차 수준**의 기술 강사 스킬입니다. 기존 로드맵에서 `다형성1 진행하자`라고 요청하거나 독립적으로 `Bean 생명주기 설명해줘`라고 하더라도 **같은 설명 규칙**을 적용하며 로드맵 설계·진도 관리에는 관여하지 않습니다.
 
-**참고 자료 정책:** 공식 문서로 기술 사실을 검증하고, **개인 개발 기술 블로그(Tistory·Velog·Medium·GitHub.io·독립 블로그)와 한국 IT 기업 기술 블로그**의 관련 글을 실제로 탐색·검토해 본문에 핵심 내용을 반영합니다. **한빛미디어와 위키독스는 추천·참고 링크에서 제외**합니다. 블로그의 신뢰도는 개별 글의 정확성과 근거로 판단합니다.
+- **깊이:** 기본 문법 소개를 반복하지 않고 실제 코드의 동작, 객체 책임 배치, 실행/설계 판단 기준, 한계와 트레이드오프를 충분히 설명합니다. 장문 자체가 목표는 아니며 문단·글머리표·표를 내용에 따라 사용합니다.
+- **소제목별 참고 자료:** 각 **실질적인 주요 소제목과 핵심 하위 주제**에 적합한 한국어 기술 글을 실제 탐색하고, 읽은 핵심 내용과 링크를 가까운 문단에 반영합니다. 개인 개발 블로그(Tistory·Velog·Medium·GitHub.io 등), **테코블(Tecoble)**, 한국 IT 기업 기술 블로그를 적극 고려하며 한빛미디어·위키독스 추천은 제외합니다.
+- **실제 이미지:** 구조·상태·호출 흐름에 도움이 될 때 원본 기술 글·강의의 실제 개념 이미지를 우선 확인해 사용합니다. 출처·권한·실제 표시 여부를 확인하고 **파비콘·로고·빈 이미지 자리**를 이미지로 취급하지 않습니다. 도식은 보조 수단입니다.
+- **최종 자체 점검:** [답변 품질 게이트](concept-learning/references/response-quality-gate.md)에 따라 초안 뒤 **신입~2년 차 수준, 소제목별 출처, 실제 이미지, 코드 동작, 반복·가독성, 유익한 심화 키워드**를 PASS / REVISE / LIMITATION으로 내부 점검하고 가능한 문제를 수정합니다. 지침 자체는 별도 모델 평가나 자동 실행 훅이 아니므로 **CI 통과가 실제 학습 답변 품질을 보증하지는 않습니다**.
 
-**이미지 정책:** 그림이 도움이 된다면 **실제 기술 블로그·강의에 포함된 이미지 탐색과 본문 활용이 우선**입니다. 원본 내용·출처·이용 조건을 확인하고 설명과 연결하며, 자체 도식은 실제 이미지가 부족한 부분에만 보조적으로 씁니다. 이미지가 확보되지 않은 경우 빈 자리·가짜 출처·자동 생성 도식 남발을 피합니다.
-
-**심화와 글 구성:** 배경·원리·코드 실행·실무 판단을 깊이 설명하고, 관련된 추가 개념·키워드·실제로 읽은 심화 글을 선택적으로 제시합니다. **글을 무조건 길게 만들지 않으며**, 연결된 문단과 핵심 글머리표·표를 내용에 따라 조합합니다. 정상적인 Markdown 표 형식을 점검합니다.
-
-상세 규칙은 [교수법 26개 항목](concept-learning/references/teaching-rules.md),
-[분야별 심화 기준](concept-learning/references/subject-guidance.md),
-[자료·이미지·심화 운영 기준](concept-learning/references/source-and-visual-guidance.md),
-[주제 선택과 설명의 경계](concept-learning/references/topic-context.md),
-[합격·실패 사례](concept-learning/references/quality-cases.md),
-[프로젝트 연결 지침](concept-learning/references/project-instructions.md)을 참고합니다.
-
-플러그인 호출만으로 이전 세션의 PDF·학습 진도가 자동 제공되지는 않으며, 웹·이미지 접근이 제한된 환경에서는 확인한 범위만 설명합니다. 실습·퀴즈·노트 작성·Wiki 저장도 자동으로 수행하지 않습니다.
+세부 지침: [교수법 26개 규칙](concept-learning/references/teaching-rules.md),
+[분야별 기준](concept-learning/references/subject-guidance.md),
+[자료·이미지 활용](concept-learning/references/source-and-visual-guidance.md),
+[주제 경계](concept-learning/references/topic-context.md),
+[실패·합격 사례](concept-learning/references/quality-cases.md),
+[프로젝트 연결](concept-learning/references/project-instructions.md).
 
 ### ChatGPT 웹 / 공개 플러그인 디렉터리
 

@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "concept-learning",
-  "version": "0.2.0",
-  "description": "Teach Java/Spring backend concepts in Korean using developer blogs, image-first explanations, readable depth and optional follow-up topics.",
+  "version": "0.3.0",
+  "description": "Teach early-career Java/Spring backend concepts with source-rich Korean lessons, actual images, and pre-answer quality checks.",
   "author": {
     "name": "guseoh",
     "url": "https://github.com/guseoh"
@@ -22,14 +22,14 @@
     "com.openai": {
       "interface": {
         "displayName": "Concept Learning",
-        "shortDescription": "Learn backend concepts with verified blog examples and real images.",
-        "longDescription": "An instructor for aspiring Java/Spring backend developers. Teaches a selected topic with actual behavior and code, prioritizes independent Korean developer blogs and Korean engineering-company blogs (not Hanbit Media or Wikidocs), real verified explanatory images over generated diagrams, and relevant deeper concepts. Chooses prose, bullets and tables by clarity rather than length. Does not manage roadmaps or progress.",
+        "shortDescription": "Backend lessons with verified sources, visuals and QA.",
+        "longDescription": "An instructor for Java/Spring backend engineers from new hire through about 2 years of experience. Explains mechanisms and tradeoffs without beginner repetition; finds relevant Korean developer and Tecoble articles beside each substantial section; favors real instructional images over generated diagrams; self-checks source coverage, technical depth, redundancy and honest limitations before responding. Does not manage roadmaps or progress.",
         "developerName": "guseoh",
         "category": "Productivity",
         "capabilities": [
-          "Teach Java/Spring/backend topics with concrete code and runtime behavior",
-          "Prioritize Korean individual developer blogs and engineering-company sources",
-          "Use relevant real images first; offer selective deeper topics and readable bullets"
+          "Explain early-career backend mechanisms with code, tradeoffs and boundary conditions",
+          "Find and integrate relevant Korean independent, Tecoble and company technical articles per substantial section",
+          "Prefer actual instructional images and internally audit every full lesson before responding"
         ],
         "defaultPrompt": [
           "$concept-learning 다형성1부터 진행하자.",
