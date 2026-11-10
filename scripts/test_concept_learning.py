@@ -216,6 +216,26 @@ class ConceptLearningContract(unittest.TestCase):
         self.assertIn("SUMMARIZE는 유지", cases)
         self.assertIn("CI는 정적", gate)
 
+    def test_korean_writing_sources_and_international_image_research(self) -> None:
+        skill = self.source("SKILL.md")
+        source = self.source("references/source-and-visual-guidance.md")
+        research = self.source("references/research-first-workflow.md")
+        gate = self.source("references/response-quality-gate.md")
+        mode = self.source("references/response-modes.md")
+        cases = self.source("references/quality-cases.md")
+        for keyword in ("한국어 개인", "국내 IT 기업", "대부분", "공식"):
+            with self.subTest(reference=keyword):
+                self.assertIn(keyword, source)
+                self.assertIn(keyword, research + gate)
+        for keyword in ("해외 벤더 공식 문서", "영어 검색어", "가독성", "한국어로", "권리"):
+            with self.subTest(image=keyword):
+                self.assertIn(keyword, source + research + gate + cases)
+        self.assertIn("이미지 출처에는 한국어·국가 제한을 두지 않는다", skill)
+        self.assertIn("한국어·영어", mode)
+        self.assertIn("이미지 출처의 국가·언어를 제한하지 않는다", cases)
+        self.assertIn("SUMMARIZE", cases)
+        self.assertIn("정적 테스트로 인증할 수 없다", cases)
+
     def test_complete_teaching_rules(self) -> None:
         guidance = self.source(EXTRAS[0])
         numbers = [int(n) for n in re.findall(r"(?m)^(\d{1,2})\. ", guidance)]
