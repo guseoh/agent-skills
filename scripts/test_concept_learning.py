@@ -46,7 +46,7 @@ class ConceptLearningContract(unittest.TestCase):
         context = self.source("references/topic-context.md")
         cases = self.source("references/quality-cases.md")
         instructions = self.source("references/project-instructions.md")
-        for required in ("취업 준비생", "다형성1부터 진행하자", "Bean 생명주기", "진행하자", "설명해줘"):
+        for required in ("신입~2년 차", "다형성1부터 진행하자", "Bean 생명주기", "진행하자", "설명해줘"):
             with self.subTest(required=required):
                 self.assertIn(required, skill)
         self.assertIn("로드맵을 설계·편집·병합", context)
