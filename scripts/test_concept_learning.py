@@ -125,7 +125,7 @@ class ConceptLearningContract(unittest.TestCase):
         research = self.source("references/research-first-workflow.md")
         gate = self.source("references/response-quality-gate.md")
         self.assertIn("## 주제별 강의 작성 절차 — 자료 조사 우선", skill)
-        self.assertLess(skill.index("1. **요청 모드를 정한 뒤 주제를 분석한다."), skill.index("5. **확인된 근거로 모드에 맞게 작성한다."))
+        self.assertLess(skill.index("1. **요청 모드를 정한 뒤 주제를 분석한다."), skill.index("5. **소제목별 검증된 근거로 모드에 맞게 작성한다."))
         self.assertIn("자료 조사와 소제목별 근거 매핑을 마치기 전", skill)
         self.assertIn("G0. 조사 우선 충족", gate)
         self.assertIn("단계 A/B/C", gate)
