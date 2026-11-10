@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "concept-learning",
-  "version": "0.5.0",
-  "description": "Research-first Java/Spring learning with topic-relevant sources and two modes: in-depth explanation or concise study summary.",
+  "version": "0.6.0",
+  "description": "Research-first Java/Spring explanations with stronger claim-source alignment, genuine inline visuals and textbook insights; concise summaries remain available.",
   "author": {
     "name": "guseoh",
     "url": "https://github.com/guseoh"
@@ -22,14 +22,14 @@
     "com.openai": {
       "interface": {
         "displayName": "Concept Learning",
-        "shortDescription": "Explain concepts deeply or summarize the essentials, with relevant sources.",
-        "longDescription": "Research-first learning for early-career Java/Spring developers. Routes Explain to an in-depth lesson and Summarize to a concise, accurate study recap; uses relevant Korean developer, Tecoble and engineering articles. Textbook outlines are keyword discovery aids only when relevant to the requested topic; OOP books are not injected into unrelated Spring lessons. Finds genuinely useful images without filler, and checks source relevance, depth or brevity, accuracy and safety before responding.",
+        "shortDescription": "Explain with verified evidence and real visuals, or summarize.",
+        "longDescription": "An early-career Java/Spring teaching plugin. EXPLAIN cross-checks each important claim against genuinely relevant Korean developer/Tecoble/engineering content, uses rights-respecting actual instructional images rather than favicon or image links, integrates verified textbook ideas into the relevant section, and checks that examples actually demonstrate the behavior. SUMMARIZE keeps concise core concepts and selective resources. Research-first guidance and pre-answer QA, no runtime QA hook or automated publishing.",
         "developerName": "guseoh",
         "category": "Productivity",
         "capabilities": [
-          "Explain backend mechanisms and tradeoffs in depth when asked to explain or start a lesson",
-          "Summarize core concepts and caveats concisely when asked to organize or recap a topic",
-          "Research only topic-relevant technical articles, books and instructional images before writing"
+          "Research and teach Java/Spring mechanisms with direct claim-source alignment and design tradeoffs",
+          "Prioritize substantive, rights-appropriate instructional images embedded and explained in context",
+          "Verify example behavior and relevant book insights in EXPLAIN while preserving concise SUMMARIZE mode"
         ],
         "defaultPrompt": [
           "$concept-learning Java 다형성 설명해줘.",
