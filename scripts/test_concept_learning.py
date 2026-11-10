@@ -260,6 +260,54 @@ class ConceptLearningContract(unittest.TestCase):
         self.assertIn("무단", cases)
         self.assertIn("SUMMARIZE", self.source("references/response-modes.md"))
 
+    def test_visual_decision_matrix_fallback_and_copy_scope(self) -> None:
+        skill = self.source("SKILL.md")
+        visual = self.source("references/source-and-visual-guidance.md")
+        gate = self.source("references/response-quality-gate.md")
+        cases = self.source("references/quality-cases.md")
+        modes = self.source("references/response-modes.md")
+        for term in ("## 시각화 선택·대체·복사 요청의 단일 판단 기준",
+                     "검증된 원본 이미지", "독립적으로 설계한 자체 도식",
+                     "시간표·비교표·본문 해설", "이미지 생략",
+                     "부적합 이미지 복구 순서", "제3언어", "권리"):
+            with self.subTest(visual_choice=term):
+                self.assertIn(term, visual)
+        for term in ("보이는 도식 그대로 복사", "렌더링된 이미지",
+                     "SVG/Mermaid", "Skills-only", "클립보드", "PNG"):
+            with self.subTest(copy_boundary=term):
+                self.assertIn(term, visual)
+        self.assertIn("## 시각화 결과의 복사 요청", skill)
+        self.assertIn("시각화 선택·교체·복사 검증", gate)
+        self.assertIn("렌더링 이미지 복사", cases)
+        self.assertIn("시각화 복사 기준", modes)
+
+    def test_research_has_explicit_three_part_stop_condition(self) -> None:
+        research = self.source("references/research-first-workflow.md")
+        skill = self.source("SKILL.md")
+        gate = self.source("references/response-quality-gate.md")
+        self.assertIn("## 단계 B 완료 조건 — 검색 종료 판정", research)
+        for term in ("기술 사실 검증", "직접 관련 자료 확보",
+                     "시각화 처리 방침 확정", "추가 검색을 멈추고",
+                     "검색 횟수나 출처 수가 아니라", "NOT_APPLICABLE"):
+            with self.subTest(stop_rule=term):
+                self.assertIn(term, research)
+        self.assertLess(research.index("## 단계 B 완료 조건"), research.index("## 단계 C"))
+        self.assertIn("검색 종료 조건", skill)
+        self.assertIn("단계 B 검색 종료 조건", gate)
+
+    def test_five_live_smoke_scenarios_have_unverified_status(self) -> None:
+        report = (ROOT / "tests/concept-learning.md").read_text(encoding="utf-8")
+        cases = self.source("references/quality-cases.md")
+        self.assertIn("## v0.6.1 병합 전 추가 품질 수용 기준", report)
+        for term in ("Java 다형성 설명해줘", "MySQL InnoDB MVCC",
+                     "Spring @Transactional", "Java 다형성 정리해줘",
+                     "보이는 모습 그대로 복사", "미실행"):
+            with self.subTest(scenario=term):
+                self.assertIn(term, report)
+        self.assertIn("## 0-9. v0.6.1 병합 전", cases)
+        self.assertIn("정적 계약 테스트", cases)
+        self.assertIn("실사용 검증 성공으로 승격하지 않는다", report)
+
     def test_complete_teaching_rules(self) -> None:
         guidance = self.source(EXTRAS[0])
         numbers = [int(n) for n in re.findall(r"(?m)^(\d{1,2})\. ", guidance)]
