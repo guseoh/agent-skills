@@ -18,6 +18,7 @@ EXTRAS = (
     "references/project-instructions.md",
     "references/topic-context.md",
     "references/source-and-visual-guidance.md",
+    "references/response-quality-gate.md",
 )
 
 
@@ -45,7 +46,7 @@ class ConceptLearningContract(unittest.TestCase):
         context = self.source("references/topic-context.md")
         cases = self.source("references/quality-cases.md")
         instructions = self.source("references/project-instructions.md")
-        for required in ("취업 준비생", "다형성1부터 진행하자", "Bean 생명주기", "진행하자", "설명해줘"):
+        for required in ("신입~2년 차", "다형성1부터 진행하자", "Bean 생명주기", "진행하자", "설명해줘"):
             with self.subTest(required=required):
                 self.assertIn(required, skill)
         self.assertIn("로드맵을 설계·편집·병합", context)
@@ -96,6 +97,26 @@ class ConceptLearningContract(unittest.TestCase):
         self.assertIn("객체지향 강의에 대한 실제 실패 교정", cases)
         self.assertIn("이미지 실패", cases)
         self.assertIn("한빛미디어·위키독스", cases)
+
+    def test_quality_gate_enforces_preaudit_and_revision(self) -> None:
+        skill = self.source("SKILL.md")
+        gate = self.source("references/response-quality-gate.md")
+        sources = self.source("references/source-and-visual-guidance.md")
+        rules = self.source("references/teaching-rules.md")
+        self.assertIn("답변 초안 작성 후, 최종 출력 전에", skill)
+        self.assertIn("신입~2년 차", skill)
+        self.assertIn("신입~2년 차", rules)
+        for label in ("G1.", "G2.", "G3.", "G4.", "G5.", "G6.", "G7.", "G8."):
+            with self.subTest(label=label):
+                self.assertIn(label, gate)
+        for term in ("PASS", "REVISE", "LIMITATION", "다시 검사", "소제목", "실제 이미지", "파비콘", "중복", "저작권", "실제 모델 응답"):
+            with self.subTest(term=term):
+                self.assertIn(term, gate)
+        for term in ("테코블", "주요 소제목", "핵심 하위 주제"):
+            with self.subTest(term=term):
+                self.assertIn(term, sources)
+        self.assertIn("CI는 정적", gate)
+        self.assertIn("체크리스트 자체를 학습자에게 자동 출력하지 않는다", skill)
 
     def test_complete_teaching_rules(self) -> None:
         guidance = self.source(EXTRAS[0])
