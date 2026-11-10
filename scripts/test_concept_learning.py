@@ -236,6 +236,30 @@ class ConceptLearningContract(unittest.TestCase):
         self.assertIn("SUMMARIZE", cases)
         self.assertIn("정적 테스트로 인증할 수 없다", cases)
 
+    def test_image_visible_language_only_korean_english(self) -> None:
+        skill = self.source("SKILL.md")
+        source = self.source("references/source-and-visual-guidance.md")
+        research = self.source("references/research-first-workflow.md")
+        gate = self.source("references/response-quality-gate.md")
+        cases = self.source("references/quality-cases.md")
+        teaching = self.source("references/teaching-rules.md")
+        for term in ("중국어", "일본어", "한글", "영어"):
+            with self.subTest(term=term):
+                self.assertIn(term, skill)
+                self.assertIn(term, source)
+                self.assertIn(term, research)
+                self.assertIn(term, gate)
+        self.assertIn("이미지 출처의 국가·언어와 이미지 안의 표시 언어는 별개다", skill)
+        self.assertIn("그림 내부 언어(한글/영어/그 외)", research)
+        self.assertIn("제3언어", gate)
+        self.assertIn("事务 B 第三次读取数据", cases)
+        self.assertIn("记录的字段", cases)
+        self.assertIn("小林", cases)
+        self.assertIn("한글·영어만 표시된 후보", teaching)
+        self.assertIn("OCR 검사·번역 성공을 수행한 것처럼 주장하지 않는다", source)
+        self.assertIn("무단", cases)
+        self.assertIn("SUMMARIZE", self.source("references/response-modes.md"))
+
     def test_complete_teaching_rules(self) -> None:
         guidance = self.source(EXTRAS[0])
         numbers = [int(n) for n in re.findall(r"(?m)^(\d{1,2})\. ", guidance)]
