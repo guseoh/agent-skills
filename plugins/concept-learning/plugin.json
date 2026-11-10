@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "concept-learning",
-  "version": "0.4.0",
-  "description": "Research-first Korean lessons for early-career Java/Spring backend developers, backed by source maps, textbook keywords, genuine images and quality checks.",
+  "version": "0.5.0",
+  "description": "Research-first Java/Spring learning with topic-relevant sources and two modes: in-depth explanation or concise study summary.",
   "author": {
     "name": "guseoh",
     "url": "https://github.com/guseoh"
@@ -22,18 +22,19 @@
     "com.openai": {
       "interface": {
         "displayName": "Concept Learning",
-        "shortDescription": "Research first, then teach backend concepts with sources and real visuals.",
-        "longDescription": "A research-first learning instructor for early-career Java/Spring engineers. Maps the topic, searches and reads Korean developer/Tecoble/engineering-company articles and relevant publicly accessible textbook outlines or commentary, independently looks for genuine teaching images, then plans a concise in-depth lesson with sources close to each section. Pre-draft evidence review plus final quality gate; no invented sources or book access. Does not manage roadmaps or progress.",
+        "shortDescription": "Explain concepts deeply or summarize the essentials, with relevant sources.",
+        "longDescription": "Research-first learning for early-career Java/Spring developers. Routes Explain to an in-depth lesson and Summarize to a concise, accurate study recap; uses relevant Korean developer, Tecoble and engineering articles. Textbook outlines are keyword discovery aids only when relevant to the requested topic; OOP books are not injected into unrelated Spring lessons. Finds genuinely useful images without filler, and checks source relevance, depth or brevity, accuracy and safety before responding.",
         "developerName": "guseoh",
         "category": "Productivity",
         "capabilities": [
-          "Research topic mechanisms, Korean technical sources and textbook-derived search keywords before drafting",
-          "Investigate real instructional images separately and plan section-specific evidence coverage",
-          "Write focused senior-beginner lessons, revisiting research if the internal pre-answer check finds gaps"
+          "Explain backend mechanisms and tradeoffs in depth when asked to explain or start a lesson",
+          "Summarize core concepts and caveats concisely when asked to organize or recap a topic",
+          "Research only topic-relevant technical articles, books and instructional images before writing"
         ],
         "defaultPrompt": [
-          "$concept-learning 다형성1부터 진행하자.",
-          "$concept-learning Spring의 Bean 생명주기 설명해줘."
+          "$concept-learning Java 다형성 설명해줘.",
+          "$concept-learning Java 다형성 핵심만 정리해줘.",
+          "$concept-learning Spring Bean 생명주기 설명해줘."
         ]
       }
     }

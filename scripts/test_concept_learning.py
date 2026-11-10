@@ -20,6 +20,7 @@ EXTRAS = (
     "references/source-and-visual-guidance.md",
     "references/response-quality-gate.md",
     "references/research-first-workflow.md",
+    "references/response-modes.md",
 )
 
 
@@ -151,6 +152,37 @@ class ConceptLearningContract(unittest.TestCase):
         self.assertIn("강의 초안을 쓰기 전에", skill)
         self.assertNotIn("mcpServers", skill)
         self.assertNotIn("hooks", skill)
+
+    def test_explain_vs_summarize_modes(self) -> None:
+        skill = self.source("SKILL.md")
+        modes = self.source("references/response-modes.md")
+        research = self.source("references/research-first-workflow.md")
+        gate = self.source("references/response-quality-gate.md")
+        cases = self.source("references/quality-cases.md")
+        for token in ("설명해줘", "정리해줘", "요약해줘", "EXPLAIN", "SUMMARIZE"):
+            with self.subTest(token=token):
+                self.assertIn(token, modes)
+                self.assertIn(token, skill + research)
+        self.assertIn("첨부 파일", modes)
+        self.assertIn("실제로 확인 가능한", modes)
+        self.assertIn("SUMMARIZE", gate)
+        self.assertIn("EXPLAIN", gate)
+        self.assertIn("정리해줘", cases)
+        self.assertIn("설명과 정리", self.source("references/project-instructions.md"))
+
+    def test_book_relevance_before_book_keyword_discovery(self) -> None:
+        skill = self.source("SKILL.md")
+        research = self.source("references/research-first-workflow.md")
+        sources = self.source("references/source-and-visual-guidance.md")
+        cases = self.source("references/quality-cases.md")
+        self.assertIn("관련 없는 주제에는 자동으로 가져오지 않는다", skill)
+        self.assertIn("Spring Bean 생명주기에서는 기본 탐색 대상이 아니다", research)
+        self.assertIn("관련 없는 책은 검색에 포함하지 않고", sources)
+        self.assertIn("무관한 객체지향 서적을 무조건 인용", cases)
+        self.assertIn("주제 일치 여부", research)
+        self.assertIn("읽지 않은 책", skill)
+        self.assertNotIn("hooks", skill)
+        self.assertNotIn("mcpServers", skill)
 
     def test_complete_teaching_rules(self) -> None:
         guidance = self.source(EXTRAS[0])
