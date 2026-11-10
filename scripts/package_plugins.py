@@ -22,6 +22,7 @@ EXTRAS = {
         "references/topic-context.md",
         "references/source-and-visual-guidance.md",
         "references/response-quality-gate.md",
+        "references/research-first-workflow.md",
         "references/teaching-rules.md",
         "references/subject-guidance.md",
         "references/quality-cases.md",
