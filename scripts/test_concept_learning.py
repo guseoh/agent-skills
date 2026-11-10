@@ -184,6 +184,38 @@ class ConceptLearningContract(unittest.TestCase):
         self.assertNotIn("hooks", skill)
         self.assertNotIn("mcpServers", skill)
 
+    def test_explain_source_claim_and_image_display_gates(self) -> None:
+        skill = self.source("SKILL.md")
+        gate = self.source("references/response-quality-gate.md")
+        research = self.source("references/research-first-workflow.md")
+        sources = self.source("references/source-and-visual-guidance.md")
+        cases = self.source("references/quality-cases.md")
+        for term in ("주장-출처", "소제목", "직접", "정적 메서드"):
+            with self.subTest(source=term):
+                self.assertIn(term, research + gate)
+        for term in ("파비콘", "미디어", "링크", "렌더링", "실제 개념 이미지"):
+            with self.subTest(visual=term):
+                self.assertIn(term, sources + gate)
+        self.assertIn("google.com/s2/favicons", cases)
+        self.assertIn("Markdown 텍스트 링크", cases)
+        self.assertIn("이미지 자체", skill)
+        self.assertIn("표시 성공", gate)
+
+    def test_explain_book_in_body_and_semantically_complete_code(self) -> None:
+        skill = self.source("SKILL.md")
+        gate = self.source("references/response-quality-gate.md")
+        cases = self.source("references/quality-cases.md")
+        sources = self.source("references/source-and-visual-guidance.md")
+        self.assertIn("책 이름과 장 번호만 맨 끝에", skill)
+        self.assertIn("본문 단원", gate)
+        self.assertIn("《오브젝트》", cases)
+        self.assertIn("discountPolicy.discount(price)", cases)
+        self.assertIn("Spring DI는 반드시 인터페이스가 있어야 가능한 기술이 아니다", cases)
+        self.assertIn("동일한", gate)
+        self.assertIn("컴파일타임 의존성과 런타임 의존성", sources)
+        self.assertIn("SUMMARIZE는 유지", cases)
+        self.assertIn("CI는 정적", gate)
+
     def test_complete_teaching_rules(self) -> None:
         guidance = self.source(EXTRAS[0])
         numbers = [int(n) for n in re.findall(r"(?m)^(\d{1,2})\. ", guidance)]
