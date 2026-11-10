@@ -19,6 +19,8 @@ EXTRAS = (
     "references/topic-context.md",
     "references/source-and-visual-guidance.md",
     "references/response-quality-gate.md",
+    "references/research-first-workflow.md",
+    "references/response-modes.md",
 )
 
 
@@ -117,6 +119,70 @@ class ConceptLearningContract(unittest.TestCase):
                 self.assertIn(term, sources)
         self.assertIn("CI는 정적", gate)
         self.assertIn("체크리스트 자체를 학습자에게 자동 출력하지 않는다", skill)
+
+    def test_research_first_precedes_drafting(self) -> None:
+        skill = self.source("SKILL.md")
+        research = self.source("references/research-first-workflow.md")
+        gate = self.source("references/response-quality-gate.md")
+        self.assertIn("## 주제별 강의 작성 절차 — 자료 조사 우선", skill)
+        self.assertLess(skill.index("1. **요청 모드를 정한 뒤 주제를 분석한다."), skill.index("5. **확인된 근거로 모드에 맞게 작성한다."))
+        self.assertIn("자료 조사와 소제목별 근거 매핑을 마치기 전", skill)
+        self.assertIn("G0. 조사 우선 충족", gate)
+        self.assertIn("단계 A/B/C", gate)
+        self.assertIn("단계 B/C로 되돌아가", research)
+        for label in ("단계 A", "단계 B", "단계 C", "단계 D", "근거 지도", "소제목"):
+            with self.subTest(label=label):
+                self.assertIn(label, research)
+
+    def test_book_keyword_discovery_and_image_evidence_states(self) -> None:
+        research = self.source("references/research-first-workflow.md")
+        sources = self.source("references/source-and-visual-guidance.md")
+        cases = self.source("references/quality-cases.md")
+        skill = self.source("SKILL.md")
+        for term in ("《오브젝트》", "《객체지향의 사실과 오해》", "공개 목차", "읽지 않은", "다형성", "컴파일타임"):
+            with self.subTest(term=term):
+                self.assertIn(term, research)
+        for term in ("FOUND_AND_DISPLAYABLE", "FOUND_LINK_ONLY", "NOT_FOUND", "NOT_APPLICABLE", "TOOL_UNAVAILABLE"):
+            with self.subTest(state=term):
+                self.assertIn(term, research)
+                self.assertIn(term, sources)
+        for term in ("파비콘", "s2/favicons", "실제", "CI"):
+            with self.subTest(term=term):
+                self.assertIn(term, cases)
+        self.assertIn("강의 초안을 쓰기 전에", skill)
+        self.assertNotIn("mcpServers", skill)
+        self.assertNotIn("hooks", skill)
+
+    def test_explain_vs_summarize_modes(self) -> None:
+        skill = self.source("SKILL.md")
+        modes = self.source("references/response-modes.md")
+        research = self.source("references/research-first-workflow.md")
+        gate = self.source("references/response-quality-gate.md")
+        cases = self.source("references/quality-cases.md")
+        for token in ("설명해줘", "정리해줘", "요약해줘", "EXPLAIN", "SUMMARIZE"):
+            with self.subTest(token=token):
+                self.assertIn(token, modes)
+                self.assertIn(token, skill + research)
+        self.assertIn("첨부 파일", modes)
+        self.assertIn("실제 확인 가능한", modes)
+        self.assertIn("SUMMARIZE", gate)
+        self.assertIn("EXPLAIN", gate)
+        self.assertIn("정리해줘", cases)
+        self.assertIn("설명과 정리", self.source("references/project-instructions.md"))
+
+    def test_book_relevance_before_book_keyword_discovery(self) -> None:
+        skill = self.source("SKILL.md")
+        research = self.source("references/research-first-workflow.md")
+        sources = self.source("references/source-and-visual-guidance.md")
+        cases = self.source("references/quality-cases.md")
+        self.assertIn("관련 없는 주제에는 자동으로 가져오지 않는다", skill)
+        self.assertIn("Spring Bean 생명주기에서는 기본 탐색 대상이 아니다", research)
+        self.assertIn("관련 없는 책은 검색에 포함하지 않고", sources)
+        self.assertIn("무관한 객체지향 서적을 무조건 인용", cases)
+        self.assertIn("주제 일치 여부", research)
+        self.assertIn("읽지 않은 책", skill)
+        self.assertNotIn("hooks", skill)
+        self.assertNotIn("mcpServers", skill)
 
     def test_complete_teaching_rules(self) -> None:
         guidance = self.source(EXTRAS[0])
