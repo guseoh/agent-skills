@@ -18,6 +18,7 @@ NAMES = (
     "concept-learning",
 )
 EXTRAS = {
+    "reverse-engineering": ("references/project-analysis.md",),
     "concept-learning": (
         "references/topic-context.md",
         "references/source-and-visual-guidance.md",
@@ -30,6 +31,8 @@ EXTRAS = {
         "references/project-instructions.md",
     ),
     "cs-learning-visualization": (
+        "references/quality-and-delivery.md",
+        "scripts/validate_svg.py",
         "examples/heap-tree-array.svg",
         "examples/java-pass-by-value.svg",
         "examples/tcp-sliding-window.svg",

@@ -11,39 +11,9 @@ ROOT = Path(__file__).resolve().parents[1]
 NAME = "cs-learning-visualization"
 SVG_NS = "{http://www.w3.org/2000/svg}"
 CASES = ("heap-tree-array", "java-pass-by-value", "tcp-sliding-window")
-MAX_SVG_BYTES = 256_000
-FORBIDDEN_SVG_TAGS = {
-    "script", "foreignobject", "image", "iframe", "animate",
-    "animatetransform", "animatemotion", "set", "use", "feimage",
-}
-REMOTE_VALUE = re.compile(r"(?:https?://|file:|javascript:|data:|@import|@font-face|expression\s*\()", re.I)
-LOCAL_URL = re.compile(r"^url\(\s*#[A-Za-z][A-Za-z0-9_-]*\s*\)$", re.I)
-
-
-def parse_safe_svg(data: bytes) -> ET.Element:
-    """Reject executable or resource-loading SVG content before reviewing fixtures."""
-    assert len(data) <= MAX_SVG_BYTES, "oversized SVG"
-    assert not re.search(rb"<!\s*(?:DOCTYPE|ENTITY)\b", data, re.I), "DTD/entity declarations forbidden"
-    root = ET.fromstring(data)
-    assert root.tag == SVG_NS + "svg", "not an SVG root"
-    for el in root.iter():
-        bare = el.tag.rsplit("}", 1)[-1].lower()
-        assert bare not in FORBIDDEN_SVG_TAGS, f"unsafe SVG element: {bare}"
-        for key, value in el.attrib.items():
-            attr = key.rsplit("}", 1)[-1].lower()
-            assert not (attr.startswith("on") or attr.endswith("href")), f"unsafe SVG attribute: {attr}"
-            assert not REMOTE_VALUE.search(value), f"unsafe external resource in {attr}"
-            if re.search(r"url\s*\(", value, re.I):
-                assert LOCAL_URL.fullmatch(value.strip()), f"nonlocal paint reference: {attr}"
-        if bare == "style":
-            style = el.text or ""
-            assert not REMOTE_VALUE.search(style), "unsafe SVG CSS"
-            # SVGs legitimately use local paint markers (url(#arrow)).
-            # Accept those identifiers but no CSS remote/dynamic resource URLs.
-            css_refs = re.findall(r"url\s*\([^)]*\)", style, re.I)
-            assert len(css_refs) == len(re.findall(r"url\s*\(", style, re.I)), "malformed SVG CSS URL"
-            assert all(LOCAL_URL.fullmatch(ref) for ref in css_refs), "nonlocal SVG CSS resource"
-    return root
+import sys
+sys.path.insert(0, str(ROOT / NAME / "scripts"))
+from validate_svg import parse_safe_svg, validate_svg
 
 
 def validate(name: str) -> None:
@@ -51,6 +21,7 @@ def validate(name: str) -> None:
     packaged = ROOT / "plugins" / NAME / "skills" / NAME / "examples" / f"{name}.svg"
     data = source.read_bytes()
     assert data == packaged.read_bytes(), f"{name}: source and packaged SVG differ"
+    validate_svg(source)
     root = parse_safe_svg(data)
     assert root.attrib.get("role") == "img", f"{name}: role missing"
     assert root.attrib.get("aria-labelledby") == "viz-title viz-desc", f"{name}: accessibility labeling missing"
@@ -83,8 +54,16 @@ def validate(name: str) -> None:
         assert windows == ["1000-1399", "1200-1599"], "TCP sender window positions changed"
         slots = [(int(el.attrib["data-byte-start"]), el.attrib["data-state"])
                  for el in root.iter() if "data-byte-start" in el.attrib]
+        children = list(root)
+        captions = {"outside-window": "범위 밖", "available": "전송 가능", "sent": "전송함", "acked": "확인됨"}
+        for i, el in enumerate(children):
+            if "data-state" not in el.attrib:
+                continue
+            # Each slot is followed by its number and caption (with optional hatch rect).
+            texts = [node for node in children[i + 1:i + 5] if node.tag == SVG_NS + "text"]
+            assert len(texts) >= 2 and texts[1].text == captions[el.attrib["data-state"]], "TCP visible caption/state mismatch"
         starts = [1000, 1100, 1200, 1300, 1400, 1500]
-        assert slots[:6] == list(zip(starts, ["sent"] * 4 + ["available"] * 2)), "TCP initial state changed"
+        assert slots[:6] == list(zip(starts, ["sent"] * 4 + ["outside-window"] * 2)), "TCP initial state changed"
         assert slots[6:] == list(zip(starts, ["acked"] * 2 + ["sent"] * 2 + ["available"] * 2)), "TCP post-ACK state changed"
     print("PASS:", name)
 
