@@ -216,6 +216,98 @@ class ConceptLearningContract(unittest.TestCase):
         self.assertIn("SUMMARIZE는 유지", cases)
         self.assertIn("CI는 정적", gate)
 
+    def test_korean_writing_sources_and_international_image_research(self) -> None:
+        skill = self.source("SKILL.md")
+        source = self.source("references/source-and-visual-guidance.md")
+        research = self.source("references/research-first-workflow.md")
+        gate = self.source("references/response-quality-gate.md")
+        mode = self.source("references/response-modes.md")
+        cases = self.source("references/quality-cases.md")
+        for keyword in ("한국어 개인", "국내 IT 기업", "대부분", "공식"):
+            with self.subTest(reference=keyword):
+                self.assertIn(keyword, source)
+                self.assertIn(keyword, research + gate)
+        for keyword in ("해외 벤더 공식 문서", "영어 검색어", "가독성", "한국어로", "권리"):
+            with self.subTest(image=keyword):
+                self.assertIn(keyword, source + research + gate + cases)
+        self.assertIn("이미지 출처에는 한국어·국가 제한을 두지 않는다", skill)
+        self.assertIn("한국어·영어", mode)
+        self.assertIn("이미지 출처의 국가·언어를 제한하지 않는다", cases)
+        self.assertIn("SUMMARIZE", cases)
+        self.assertIn("정적 테스트로 인증할 수 없다", cases)
+
+    def test_image_visible_language_only_korean_english(self) -> None:
+        skill = self.source("SKILL.md")
+        source = self.source("references/source-and-visual-guidance.md")
+        research = self.source("references/research-first-workflow.md")
+        gate = self.source("references/response-quality-gate.md")
+        cases = self.source("references/quality-cases.md")
+        teaching = self.source("references/teaching-rules.md")
+        for term in ("중국어", "일본어", "한글", "영어"):
+            with self.subTest(term=term):
+                self.assertIn(term, skill)
+                self.assertIn(term, source)
+                self.assertIn(term, research)
+                self.assertIn(term, gate)
+        self.assertIn("이미지 출처의 국가·언어와 이미지 안의 표시 언어는 별개다", skill)
+        self.assertIn("그림 내부 언어(한글/영어/그 외)", research)
+        self.assertIn("제3언어", gate)
+        self.assertIn("事务 B 第三次读取数据", cases)
+        self.assertIn("记录的字段", cases)
+        self.assertIn("小林", cases)
+        self.assertIn("한글·영어만 표시된 후보", teaching)
+        self.assertIn("OCR 검사·번역 성공을 수행한 것처럼 주장하지 않는다", source)
+        self.assertIn("무단", cases)
+        self.assertIn("SUMMARIZE", self.source("references/response-modes.md"))
+
+    def test_visual_decision_matrix_fallback_and_copy_scope(self) -> None:
+        skill = self.source("SKILL.md")
+        visual = self.source("references/source-and-visual-guidance.md")
+        gate = self.source("references/response-quality-gate.md")
+        cases = self.source("references/quality-cases.md")
+        modes = self.source("references/response-modes.md")
+        for term in ("## 시각화 선택·대체·복사 요청의 단일 판단 기준",
+                     "검증된 원본 이미지", "독립적으로 설계한 자체 도식",
+                     "시간표·비교표·본문 해설", "이미지 생략",
+                     "부적합 이미지 복구 순서", "제3언어", "권리"):
+            with self.subTest(visual_choice=term):
+                self.assertIn(term, visual)
+        for term in ("보이는 도식 그대로 복사", "렌더링된 이미지",
+                     "SVG/Mermaid", "Skills-only", "클립보드", "PNG"):
+            with self.subTest(copy_boundary=term):
+                self.assertIn(term, visual)
+        self.assertIn("## 시각화 결과의 복사 요청", skill)
+        self.assertIn("시각화 선택·교체·복사 검증", gate)
+        self.assertIn("렌더링 이미지 복사", cases)
+        self.assertIn("시각화 복사 기준", modes)
+
+    def test_research_has_explicit_three_part_stop_condition(self) -> None:
+        research = self.source("references/research-first-workflow.md")
+        skill = self.source("SKILL.md")
+        gate = self.source("references/response-quality-gate.md")
+        self.assertIn("## 단계 B 완료 조건 — 검색 종료 판정", research)
+        for term in ("기술 사실 검증", "직접 관련 자료 확보",
+                     "시각화 처리 방침 확정", "추가 검색을 멈추고",
+                     "검색 횟수나 출처 수가 아니라", "NOT_APPLICABLE"):
+            with self.subTest(stop_rule=term):
+                self.assertIn(term, research)
+        self.assertLess(research.index("## 단계 B 완료 조건"), research.index("## 단계 C"))
+        self.assertIn("검색 종료 조건", skill)
+        self.assertIn("단계 B 검색 종료 조건", gate)
+
+    def test_five_live_smoke_scenarios_have_unverified_status(self) -> None:
+        report = (ROOT / "tests/concept-learning.md").read_text(encoding="utf-8")
+        cases = self.source("references/quality-cases.md")
+        self.assertIn("## v0.6.1 병합 전 추가 품질 수용 기준", report)
+        for term in ("Java 다형성 설명해줘", "MySQL InnoDB MVCC",
+                     "Spring @Transactional", "Java 다형성 정리해줘",
+                     "보이는 모습 그대로 복사", "미실행"):
+            with self.subTest(scenario=term):
+                self.assertIn(term, report)
+        self.assertIn("## 0-9. v0.6.1 병합 전", cases)
+        self.assertIn("정적 계약 테스트", cases)
+        self.assertIn("실사용 검증 성공으로 승격하지 않는다", report)
+
     def test_complete_teaching_rules(self) -> None:
         guidance = self.source(EXTRAS[0])
         numbers = [int(n) for n in re.findall(r"(?m)^(\d{1,2})\. ", guidance)]

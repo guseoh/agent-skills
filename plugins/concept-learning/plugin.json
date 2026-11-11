@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "concept-learning",
-  "version": "0.6.0",
-  "description": "Research-first Java/Spring explanations with stronger claim-source alignment, genuine inline visuals and textbook insights; concise summaries remain available.",
+  "version": "0.6.1",
+  "description": "Research-first Korean Java/Spring lessons with verified local sources and worldwide instructional image research; explain or summarize.",
   "author": {
     "name": "guseoh",
     "url": "https://github.com/guseoh"
@@ -22,14 +22,14 @@
     "com.openai": {
       "interface": {
         "displayName": "Concept Learning",
-        "shortDescription": "Explain with verified evidence and real visuals, or summarize.",
-        "longDescription": "An early-career Java/Spring teaching plugin. EXPLAIN cross-checks each important claim against genuinely relevant Korean developer/Tecoble/engineering content, uses rights-respecting actual instructional images rather than favicon or image links, integrates verified textbook ideas into the relevant section, and checks that examples actually demonstrate the behavior. SUMMARIZE keeps concise core concepts and selective resources. Research-first guidance and pre-answer QA, no runtime QA hook or automated publishing.",
+        "shortDescription": "Korean-first technical lessons, with global image research.",
+        "longDescription": "An early-career Java/Spring teaching plugin. Prefer Korean individual and Korean IT company engineering articles for the majority of explanatory reading; validate technical facts with original official references regardless of language. Search both Korean and English sources—including international official manuals, engineering blogs, and publicly available courses—for high-quality actual instructional images. Explain English image labels in Korean and verify relevance, readability, rights and actual display. Distinguishes deep Explain from concise Summarize. No automated publishing or runtime QA hooks.",
         "developerName": "guseoh",
         "category": "Productivity",
         "capabilities": [
-          "Research and teach Java/Spring mechanisms with direct claim-source alignment and design tradeoffs",
-          "Prioritize substantive, rights-appropriate instructional images embedded and explained in context",
-          "Verify example behavior and relevant book insights in EXPLAIN while preserving concise SUMMARIZE mode"
+          "Prefer verified Korean developer and Korean IT-company technical articles for explanations, with official cross-checks",
+          "Search Korean and international technical sources for legible instructional images and explain labels in Korean",
+          "Explain backend mechanisms deeply or summarize core concepts concisely, with transparent evidence limitations"
         ],
         "defaultPrompt": [
           "$concept-learning Java 다형성 설명해줘.",
