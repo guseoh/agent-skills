@@ -32,6 +32,8 @@ jobs:
         run: python scripts/package_plugins.py --check
       - name: Check educational SVG examples
         run: python scripts/check_learning_visuals.py
+      - name: Validate arbitrary SVG inputs
+        run: python scripts/test_svg_validator.py
       - name: Exercise plugin safety boundary
         run: python scripts/test_plugin_security.py
       - name: Validate concept-learning contract

@@ -1,14 +1,14 @@
 # agent-skills
 
-Codex에서 사용하는 독립적인 지침형 스킬 모음입니다. 실행 스크립트나 다른 스킬에 의존하지 않으며, 각 스킬만 따로 설치할 수 있습니다.
+Codex에서 사용하는 독립적인 지침형 스킬 모음입니다. 각 스킬은 따로 설치할 수 있으며 다른 스킬에 의존하지 않습니다. 시각화 스킬에는 선택적으로 실행하는 Python 표준 라이브러리 기반 SVG 검사기가 포함됩니다. 자동 실행 후크는 없습니다.
 
 | 스킬 | 목적과 사용 상황 |
 | --- | --- |
 | [wiki-capture](wiki-capture/SKILL.md) | 재사용할 결정·교훈·진행 상태를 평가하고 기존 Wiki 정책에 맞는 변경안을 준비합니다. |
-| [reverse-engineering](reverse-engineering/SKILL.md) | 기존 코드의 구조·실행 흐름과 Git 이력의 설계 배경을 근거로 복원합니다. |
+| [reverse-engineering](reverse-engineering/SKILL.md) | 프로젝트를 취준생 눈높이로 해체 분석하고 설계 이유·트레이드오프·포트폴리오 핵심 주제를 근거로 심화합니다. |
 | [backend-architecture-review](backend-architecture-review/SKILL.md) | Java/Spring 중심의 설계안·기존 아키텍처를 요구사항, 대안, 트레이드오프로 검토합니다. |
 | [tech-article-curation](tech-article-curation/SKILL.md) | 기술 원문을 분석해 기존 Obsidian 템플릿·태그에 맞는 학습 문서를 준비합니다. |
-| [cs-learning-visualization](cs-learning-visualization/SKILL.md) | CS 학습 개념을 정적 SVG 중심으로 시각화하고 Heap·Java·TCP 의미와 Reader 표시를 검수합니다. |
+| [cs-learning-visualization](cs-learning-visualization/SKILL.md) | CS 개념을 SVG 중심으로 시각화하고 의미·임의 SVG 형식·대상 환경 표시를 검수합니다. 복사 요청에는 PNG를 함께 제공합니다. |
 | [concept-learning](concept-learning/SKILL.md) | 기존 개념 학습 교수법으로 Java·Spring·JPA·DB·Linux·시스템 설계 등을 한국어로 설명합니다. |
 
 ## 설치와 호출
@@ -62,6 +62,7 @@ skills-ref validate concept-learning
 python scripts/test_concept_learning.py
 python scripts/check_markdown.py
 python scripts/check_learning_visuals.py
+python scripts/test_svg_validator.py
 ```
 
 Markdown 검사는 H1·frontmatter/코드 fence 닫힘·로컬 링크를 확인합니다. Mermaid 구문/화면 렌더링이나 문서의 사실성을 대신 검증하지 않습니다. `main`에는 PR과 필수 `Validate skills and Markdown` 검사를 요구하도록 보호 설정을 사용합니다. 현재 적용 상태는 검증 기록에서 확인합니다. 이 작업은 PR 생성이나 `main` 병합을 수행하지 않습니다.
@@ -157,3 +158,11 @@ foreach ($name in @('wiki-capture','reverse-engineering','backend-architecture-r
 ChatGPT 웹에서 개인용 등록·설치가 지원되는지 확인하기 전에는 ZIP 생성만으로
 설치 완료나 공개 등록을 주장하지 않습니다.
 특히 기존 Wiki/Obsidian에 쓰는 권한은 설치 자체가 승인하지 않습니다.
+
+### 해체 분석·시각화 v0.2.0
+
+Reverse Engineering은 전체 지도에서 실제 실행과 내부 원리로 내려가며, 기록된 설계 이유와 현재 분석한 대안을 구분합니다. 포트폴리오 후보는 기술 이름보다 문제·제약·트레이드오프·실측 근거로 선정합니다. 상세 기준은 스킬과 함께 배포됩니다.
+
+CS Learning Visualization은 [품질·출력 기준](cs-learning-visualization/references/quality-and-delivery.md)과 [임의 SVG 검사기](cs-learning-visualization/scripts/validate_svg.py)를 포함합니다. 기본 한국어와 필요한 영어 용어를 사용하고, 본문 미리보기와 원본 SVG를 제공합니다. 공통 정적 검사·예제 의미 검사·렌더링·실제 사용 환경 검증은 별개입니다. [이번 변경 검증](tests/review-2026-11-11.md)을 참조하세요.
+
+현재 카탈로그는 Codex/ChatGPT용입니다. 두 스킬의 공통 본문과 리소스를 Claude에서 재사용할 수 있는지와 Claude 플러그인 패키지 설치는 별도 확인 대상입니다. 이 변경은 Claude용 카탈로그·설치나 새 버전의 Codex/Claude 종단 호출을 검증했다고 주장하지 않습니다.

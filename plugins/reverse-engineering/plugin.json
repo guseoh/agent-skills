@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "reverse-engineering",
-  "version": "0.1.0",
-  "description": "Trace source code and verified design history.",
+  "version": "0.2.0",
+  "description": "Explain a project end to end, reconstruct design trade-offs, and investigate evidence-backed portfolio topics.",
   "author": {
     "name": "guseoh",
     "url": "https://github.com/guseoh"
@@ -18,7 +18,7 @@
       "interface": {
         "displayName": "Reverse Engineering",
         "shortDescription": "Trace source code and verified design history.",
-        "longDescription": "Analyze code and Git changes to reconstruct module boundaries, request/data flows, and recorded design intent without modifying the project.",
+        "longDescription": "Deconstruct projects for aspiring developers: connect requirements, architecture, code execution, design history, alternatives, and evidence-backed portfolio deep dives.",
         "developerName": "guseoh",
         "category": "Productivity",
         "capabilities": [
@@ -26,7 +26,7 @@
           "Compare implementation and Git history"
         ],
         "defaultPrompt": [
-          "이 기능의 API부터 트랜잭션·DB까지 흐름과 변경 이유를 복원해줘."
+          "이 프로젝트를 취준생이 이해할 수 있게 해체 분석하고, 설계 이유·트레이드오프와 포트폴리오 핵심 주제를 깊게 설명해줘."
         ]
       }
     }

@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "cs-learning-visualization",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Make accurate CS learning visuals with readable SVG and selective interaction.",
   "author": {
     "name": "guseoh",
